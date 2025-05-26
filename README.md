@@ -27,7 +27,6 @@ A Python GUI tool to **generate seating arrangements** and **attendance sheets**
   - `Right` side student roll numbers.
 
 > All files must be in **Excel (.xlsx)** format.
-
 ---
 
 ## 📤 Output
