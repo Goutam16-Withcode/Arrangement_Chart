@@ -2,7 +2,7 @@
 
 A Python GUI tool to **generate seating arrangements** and **attendance sheets** for exam rooms using a layout file and student roll number lists.
 
-![Main UI](./assets/Screenshot_Main.png)
+![Main UI]("C:\Users\GOUTAM SHARMA\OneDrive\Pictures\Screenshots\Screenshot 2025-05-26 134601.png")
 
 ---
 
