@@ -16,11 +16,14 @@ import {
   ArrowRight,
   Sliders,
   Sparkles,
+  QrCode,
+  UserCheck,
+  Box,
 } from "lucide-react";
 import { useSeating } from "@/lib/context/SeatingContext";
 
 export default function HomePage() {
-  const { metrics } = useSeating();
+  const { metrics, activeSession, collegeProfile } = useSeating();
 
   const featureCards = [
     {
@@ -28,48 +31,48 @@ export default function HomePage() {
       description:
         "Visualize classroom benches in real time. Drag, swap, and inspect student seat assignments with zero-delay updates.",
       link: "/studio",
-      icon: <Grid3X3 className="h-6 w-6" />,
+      icon: <Grid3X3 className="h-6 w-6 text-emerald-600" />,
       badge: "Core Studio",
     },
     {
-      title: "Constraint Anti-Cheating Engine",
+      title: "Live QR & Photo Attendance Scanner",
       description:
-        "Multi-branch interleaving algorithm ensures no two students with the same subject or department sit next to each other.",
-      link: "/studio",
-      icon: <ShieldCheck className="h-6 w-6" />,
-      badge: "AI Powered",
+        "Scan desk QR codes with mobile/webcam to verify student university photos and record timestamps instantly.",
+      link: "/scanner",
+      icon: <QrCode className="h-6 w-6 text-emerald-600" />,
+      badge: "Biometric ID",
     },
     {
       title: "2D Visual Room Blueprint Builder",
       description:
         "Design lecture halls, auditoriums, and computer labs with customizable bench sizes (1-4 seats), doors, and podiums.",
       link: "/builder",
-      icon: <Layers className="h-6 w-6" />,
+      icon: <Layers className="h-6 w-6 text-emerald-600" />,
       badge: "Drag & Drop",
     },
     {
-      title: "Student Kiosk & Digital Admit Pass",
+      title: "Student Kiosk & Indoor Wayfinding",
       description:
-        "Instant roll number search portal with 3D pin classroom locators and verification QR codes for exam morning.",
+        "Instant roll number search portal with 3D pin classroom locators, digital admit pass, and turn-by-turn indoor routing.",
       link: "/find-seat",
-      icon: <Search className="h-6 w-6" />,
+      icon: <Search className="h-6 w-6 text-emerald-600" />,
       badge: "Self Service",
     },
     {
-      title: "Print Station & Multi-Format Exporter",
+      title: "Print Station & Section-Wise Exporter",
       description:
-        "1-click batch export for A4 door charts, photo attendance sheets with signature blocks, desk tags, and styled Excel workbooks.",
+        "1-click batch export for section-wise signature books (F-1/S-1/T-1), A4 door notice charts, and multi-sheet Excel files.",
       link: "/export",
-      icon: <Printer className="h-6 w-6" />,
+      icon: <Printer className="h-6 w-6 text-emerald-600" />,
       badge: "Export",
     },
     {
-      title: "Faculty Invigilation Manager",
+      title: "Faculty Proctor Roster & Incident Log",
       description:
-        "Synchronize proctors and exam coordinators directly with hall capacities and emergency relief rotations.",
-      link: "/dashboard",
-      icon: <Zap className="h-6 w-6" />,
-      badge: "Roster",
+        "Anti-bias invigilator assignment, shift rotations, and live logging of extra answer sheets or malpractice notes.",
+      link: "/invigilators",
+      icon: <UserCheck className="h-6 w-6 text-emerald-600" />,
+      badge: "Integrity",
     },
   ];
 
@@ -82,10 +85,10 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10 text-center">
+      <section className="relative pt-16 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10 text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-8 animate-pulse-glow shadow-xs">
           <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          <span>Next-Generation Algorithmic Exam Seating Studio</span>
+          <span>{collegeProfile.collegeName} • {activeSession.title}</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight">
@@ -95,9 +98,8 @@ export default function HomePage() {
         </h1>
 
         <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
-          Upgrade from static spreadsheets to a dynamic 2D visual seating suite.
-          Features constraint-satisfaction branch interleaving, visual room builders,
-          and digital QR attendance passes.
+          Designed for real-world Mid-Semester Tests (MST) and End-Semester university exams.
+          Features multi-branch interleaving, live QR attendance scanners, and section-wise publishing.
         </p>
 
         {/* CTA Buttons */}
@@ -156,7 +158,7 @@ export default function HomePage() {
               {metrics.seatedStudents}
             </div>
             <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Students Seated
+              Candidates Seated
             </div>
           </div>
 
@@ -165,7 +167,7 @@ export default function HomePage() {
               {metrics.conflictFreeRate}%
             </div>
             <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Zero Conflict Rate
+              Zero Conflict Score
             </div>
           </div>
 
@@ -174,7 +176,7 @@ export default function HomePage() {
               {metrics.utilizationRate}%
             </div>
             <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Capacity Utilization
+              Hall Utilization
             </div>
           </div>
         </div>
@@ -197,10 +199,10 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
         <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Complete Suite of Modern Tools
+            Comprehensive Examination Modules
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Everything you need for seamless exam management in one unified platform.
+            Everything you need for seamless MST and End-Sem management in one unified platform.
           </p>
         </div>
 

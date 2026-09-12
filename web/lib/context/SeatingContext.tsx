@@ -1,10 +1,32 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { RoomConfig, Student, Invigilator, RoomSeating, SeatingMetrics } from "../types";
-import { SAMPLE_ROOMS, generateSampleStudents, SAMPLE_INVIGILATORS } from "../sampleData";
+import {
+  RoomConfig,
+  Student,
+  Invigilator,
+  RoomSeating,
+  SeatingMetrics,
+  CollegeProfile,
+  ExamSession,
+  ExamMode,
+} from "../types";
+import {
+  SAMPLE_ROOMS,
+  SAMPLE_INVIGILATORS,
+  DEFAULT_COLLEGE_PROFILE,
+  EXAM_SESSIONS,
+  generateStudentsForSession,
+} from "../sampleData";
 import { SeatingEngine } from "../seatingEngine";
 
 interface SeatingContextType {
+  collegeProfile: CollegeProfile;
+  updateCollegeProfile: (profile: Partial<CollegeProfile>) => void;
+  examMode: ExamMode;
+  setExamMode: (mode: ExamMode) => void;
+  activeSession: ExamSession;
+  sessions: ExamSession[];
+  switchSession: (sessionId: string) => void;
   rooms: RoomConfig[];
   students: Student[];
   invigilators: Invigilator[];
@@ -23,6 +45,9 @@ interface SeatingContextType {
 const SeatingContext = createContext<SeatingContextType | undefined>(undefined);
 
 export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [collegeProfile, setCollegeProfile] = useState<CollegeProfile>(DEFAULT_COLLEGE_PROFILE);
+  const [examMode, setExamModeState] = useState<ExamMode>("END_SEM");
+  const [activeSession, setActiveSession] = useState<ExamSession>(EXAM_SESSIONS[2]); // Default End-Sem Slot 1
   const [rooms, setRooms] = useState<RoomConfig[]>(SAMPLE_ROOMS);
   const [students, setStudents] = useState<Student[]>([]);
   const [invigilators] = useState<Invigilator[]>(SAMPLE_INVIGILATORS);
@@ -39,14 +64,39 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     branchesCount: {},
   });
 
-  // Initialize with sample data on mount
+  // Load session students & calculate seating on mount
   useEffect(() => {
-    const sampleStudents = generateSampleStudents();
-    setStudents(sampleStudents);
-    const result = SeatingEngine.generateSeating(SAMPLE_ROOMS, sampleStudents);
+    const sessionStudents = generateStudentsForSession(activeSession);
+    setStudents(sessionStudents);
+    const result = SeatingEngine.generateSeating(SAMPLE_ROOMS, sessionStudents);
     setRoomSeatings(result.roomSeatings);
     setMetrics(result.metrics);
   }, []);
+
+  const switchSession = (sessionId: string) => {
+    const found = EXAM_SESSIONS.find((s) => s.id === sessionId);
+    if (!found) return;
+
+    setActiveSession(found);
+    setExamModeState(found.examMode);
+
+    const sessionStudents = generateStudentsForSession(found);
+    setStudents(sessionStudents);
+
+    const result = SeatingEngine.generateSeating(rooms, sessionStudents);
+    setRoomSeatings(result.roomSeatings);
+    setMetrics(result.metrics);
+  };
+
+  const setExamMode = (mode: ExamMode) => {
+    setExamModeState(mode);
+    const matchingSession = EXAM_SESSIONS.find((s) => s.examMode === mode) || EXAM_SESSIONS[0];
+    switchSession(matchingSession.id);
+  };
+
+  const updateCollegeProfile = (profileUpdate: Partial<CollegeProfile>) => {
+    setCollegeProfile((prev) => ({ ...prev, ...profileUpdate }));
+  };
 
   const recalculateSeating = (customRooms?: RoomConfig[], customStudents?: Student[]) => {
     const activeRooms = customRooms || rooms;
@@ -100,18 +150,22 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const resetToDefaults = () => {
-    const sampleStudents = generateSampleStudents();
+    setCollegeProfile(DEFAULT_COLLEGE_PROFILE);
     setRooms(SAMPLE_ROOMS);
-    setStudents(sampleStudents);
-    const result = SeatingEngine.generateSeating(SAMPLE_ROOMS, sampleStudents);
-    setRoomSeatings(result.roomSeatings);
-    setMetrics(result.metrics);
+    switchSession("endsem-slot-1");
     setSelectedRoomNumber("302");
   };
 
   return (
     <SeatingContext.Provider
       value={{
+        collegeProfile,
+        updateCollegeProfile,
+        examMode,
+        setExamMode,
+        activeSession,
+        sessions: EXAM_SESSIONS,
+        switchSession,
         rooms,
         students,
         invigilators,

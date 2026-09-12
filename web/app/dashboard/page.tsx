@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { useSeating } from "@/lib/context/SeatingContext";
@@ -10,11 +10,45 @@ import {
   PieChart,
   UserCheck,
   ArrowUpRight,
+  Settings,
+  GraduationCap,
+  Calendar,
+  Clock,
+  BookOpen,
+  CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
-  const { metrics, invigilators, roomSeatings } = useSeating();
+  const {
+    metrics,
+    invigilators,
+    roomSeatings,
+    collegeProfile,
+    updateCollegeProfile,
+    activeSession,
+    examMode,
+    setExamMode,
+    sessions,
+    switchSession,
+  } = useSeating();
+
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [nameInput, setNameInput] = useState(collegeProfile.collegeName);
+  const [codeInput, setCodeInput] = useState(collegeProfile.collegeCode);
+  const [academicYearInput, setAcademicYearInput] = useState(collegeProfile.academicYear);
+  const [semesterInput, setSemesterInput] = useState(collegeProfile.semester);
+
+  const handleSaveProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateCollegeProfile({
+      collegeName: nameInput,
+      collegeCode: codeInput,
+      academicYear: academicYearInput,
+      semester: semesterInput,
+    });
+    setIsEditingProfile(false);
+  };
 
   const invigilatorItems = invigilators.map((inv) => ({
     id: inv.id,
@@ -25,48 +59,155 @@ export default function DashboardPage() {
   }));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-[#FBF9F4]">
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-white border border-[#E8E2D4] shadow-sm">
-        <div>
-          <div className="flex items-center gap-2 text-emerald-700 text-xs font-mono font-semibold uppercase tracking-wider mb-1">
-            <Sparkles className="h-4 w-4 text-emerald-600" />
-            <span>Real-Time Exam Control Center</span>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FBF9F4]">
+      {/* College Profile & Session Header Banner */}
+      <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-5">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-emerald-700 text-xs font-mono font-semibold uppercase tracking-wider mb-1">
+              <GraduationCap className="h-4 w-4 text-emerald-600" />
+              <span>{collegeProfile.collegeName} • Code: {collegeProfile.collegeCode}</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              {activeSession.title}
+            </h1>
+            <div className="flex items-center gap-3 text-xs text-slate-500 mt-1 flex-wrap font-mono">
+              <span className="flex items-center gap-1 font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <Calendar className="h-3.5 w-3.5 text-emerald-600" />
+                <span>{activeSession.date}</span>
+              </span>
+              <span className="flex items-center gap-1 text-slate-700">
+                <Clock className="h-3.5 w-3.5 text-slate-500" />
+                <span>{activeSession.timing}</span>
+              </span>
+              <span>•</span>
+              <span>{collegeProfile.semester} ({collegeProfile.academicYear})</span>
+            </div>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Institutional Exam Session Overview
-          </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Active Session: <strong>End-Semester Examinations 2026 (Slot: Morning 09:30 AM)</strong>
-          </p>
+
+          {/* Quick Action Navigation */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <button
+              onClick={() => setIsEditingProfile(!isEditingProfile)}
+              className="px-3.5 py-2 rounded-xl bg-[#FAF8F3] hover:bg-[#F3EFE6] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5"
+            >
+              <Settings className="h-3.5 w-3.5 text-emerald-700" />
+              <span>Edit College Settings</span>
+            </button>
+
+            <Link
+              href="/scanner"
+              className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs transition flex items-center gap-1.5 shadow-2xs"
+            >
+              <span>📷 QR Scanner</span>
+            </Link>
+
+            <Link
+              href="/studio"
+              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
+            >
+              <span>Open Seating Studio</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-wrap">
-          <Link
-            href="/scanner"
-            className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs transition flex items-center gap-1.5 shadow-2xs"
+        {/* Profile Settings Drawer (Expandable) */}
+        {isEditingProfile && (
+          <form
+            onSubmit={handleSaveProfile}
+            className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E2D4] space-y-4 animate-in fade-in"
           >
-            <span>📷 QR Scanner</span>
-          </Link>
-          <Link
-            href="/invigilators"
-            className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F6F2E8] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5"
-          >
-            <span>👨‍🏫 Proctor Roster</span>
-          </Link>
-          <Link
-            href="/3d-twin"
-            className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F6F2E8] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5"
-          >
-            <span>📦 3D Twin</span>
-          </Link>
-          <Link
-            href="/studio"
-            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
-          >
-            <span>Open Studio</span>
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
+            <h4 className="text-xs font-bold text-slate-900 uppercase font-mono tracking-wider">
+              Update Institutional Preset & Examination Information
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  College / University Name
+                </label>
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Institute Code
+                </label>
+                <input
+                  type="text"
+                  value={codeInput}
+                  onChange={(e) => setCodeInput(e.target.value)}
+                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Academic Session
+                </label>
+                <input
+                  type="text"
+                  value={academicYearInput}
+                  onChange={(e) => setAcademicYearInput(e.target.value)}
+                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                  Semester Term
+                </label>
+                <input
+                  type="text"
+                  value={semesterInput}
+                  onChange={(e) => setSemesterInput(e.target.value)}
+                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setIsEditingProfile(false)}
+                className="px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:text-slate-900 font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs"
+              >
+                Save College Profile
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Active Session Course Strip */}
+        <div className="flex items-center gap-3 overflow-x-auto pt-2 border-t border-[#EAE4D6]">
+          <span className="text-[11px] font-bold text-slate-600 uppercase font-mono flex-shrink-0">
+            Active Papers:
+          </span>
+          {activeSession.courses.map((c) => (
+            <div
+              key={c.code}
+              className="flex-shrink-0 px-3 py-1 rounded-lg bg-[#FAF8F3] border border-[#E0D9CB] text-xs flex items-center gap-1.5"
+            >
+              <span className="font-mono font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded text-[10px]">
+                {c.code}
+              </span>
+              <span className="font-bold text-slate-800">{c.name}</span>
+              <span className="text-[10px] text-slate-500">
+                ({c.branch} - Yr {c.year})
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -76,7 +217,7 @@ export default function DashboardPage() {
         <BentoGridItem
           className="md:col-span-2"
           title="Overall Exam Hall Capacity & Allocation"
-          description="Live allocation rate across all configured blocks with zero-conflict guarantee."
+          description={`Live allocation rate for ${activeSession.title} with multi-branch anti-cheating separation.`}
           icon={<Building className="h-5 w-5 text-emerald-600" />}
           header={
             <div className="h-full w-full min-h-[7rem] rounded-xl bg-[#FAF8F2] border border-[#EAE4D6] p-5 flex flex-col justify-between">
@@ -86,7 +227,7 @@ export default function DashboardPage() {
                     {metrics.seatedStudents}
                   </div>
                   <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5 font-semibold">
-                    Seated Students
+                    Candidates Seated
                   </div>
                 </div>
 
@@ -95,7 +236,7 @@ export default function DashboardPage() {
                     {metrics.totalCapacity}
                   </div>
                   <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5 font-semibold">
-                    Total Capacity
+                    Hall Capacity
                   </div>
                 </div>
 
@@ -145,11 +286,11 @@ export default function DashboardPage() {
           }
         />
 
-        {/* Item 3: Branch Interleaving Distribution */}
+        {/* Item 3: Interleaved Course Cohorts */}
         <BentoGridItem
           className="md:col-span-1"
-          title="Interleaved Branches"
-          description="Distribution of distinct branch cohorts currently scheduled."
+          title="Scheduled Disciplines"
+          description="Candidates partitioned by department to eliminate adjacent subject matching."
           icon={<PieChart className="h-5 w-5 text-teal-600" />}
           header={
             <div className="h-full w-full min-h-[7rem] rounded-xl bg-[#FAF8F2] border border-[#EAE4D6] p-4 space-y-2">
@@ -159,14 +300,14 @@ export default function DashboardPage() {
                   className="flex items-center justify-between text-xs p-2 rounded-lg bg-white border border-[#E8E2D4]"
                 >
                   <span className="font-bold text-slate-800">{branch}</span>
-                  <span className="font-mono text-emerald-700 font-bold">{count} students</span>
+                  <span className="font-mono text-emerald-700 font-bold">{count} candidates</span>
                 </div>
               ))}
             </div>
           }
         />
 
-        {/* Item 4: Room Status Summary (Span 2) */}
+        {/* Item 4: Active Hall Roster */}
         <BentoGridItem
           className="md:col-span-2"
           title="Active Room Roster"

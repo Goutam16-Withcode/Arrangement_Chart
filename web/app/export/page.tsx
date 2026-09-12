@@ -11,11 +11,12 @@ import {
   CreditCard,
   Sparkles,
   Layers,
+  GraduationCap,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 
 export default function ExportPage() {
-  const { roomSeatings } = useSeating();
+  const { roomSeatings, collegeProfile, activeSession } = useSeating();
   const [selectedRoom, setSelectedRoom] = useState(roomSeatings[0]?.roomConfig.roomNumber || "302");
   const [sectionGrouping, setSectionGrouping] = useState<"position" | "branch">("position");
 
@@ -28,7 +29,7 @@ export default function ExportPage() {
   };
 
   const handleExportExcel = () => {
-    ExcelEngine.exportSeatingWorkbook(roomSeatings);
+    ExcelEngine.exportSeatingWorkbook(roomSeatings, collegeProfile, activeSession);
   };
 
   // Group candidates section-wise by seat position (F-1, S-1, T-1)
@@ -57,7 +58,7 @@ export default function ExportPage() {
 
   const tabs = [
     {
-      title: "Section-Wise Attendance Sheet",
+      title: "Section-Wise Attendance Register",
       value: "attendance-sheet",
       icon: <FileSpreadsheet className="h-4 w-4" />,
       content: (
@@ -98,7 +99,7 @@ export default function ExportPage() {
                       : "text-slate-600"
                   }`}
                 >
-                  By Branch / Class Section
+                  By Branch / Course Section
                 </button>
               </div>
             </div>
@@ -114,17 +115,17 @@ export default function ExportPage() {
 
           {/* Printable Section-Wise Attendance Document */}
           {currentRoom && (
-            <div className="p-8 bg-white text-slate-900 rounded-2xl border border-[#E8E2D4] shadow-sm space-y-8 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
+            <div className="p-8 bg-white text-slate-900 rounded-2xl border border-[#E8E2D4] shadow-sm space-y-6 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
               {/* Header */}
               <div className="border-b-2 border-slate-900 pb-3 text-center space-y-1">
-                <div className="text-xs font-bold uppercase tracking-widest text-emerald-800">
-                  Office of the Controller of Examinations
+                <div className="text-sm font-extrabold uppercase tracking-wide text-slate-900">
+                  {collegeProfile.collegeName.toUpperCase()}
                 </div>
-                <h2 className="text-xl font-extrabold text-slate-900">
-                  SECTION-WISE OFFICIAL CANDIDATE ATTENDANCE REGISTER
-                </h2>
+                <div className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                  {activeSession.title.toUpperCase()} • {collegeProfile.academicYear.toUpperCase()}
+                </div>
                 <div className="text-xs font-semibold text-slate-700">
-                  ROOM {currentRoom.roomConfig.roomNumber} • {currentRoom.roomConfig.building} | Total Candidates: {currentRoom.assignedCount}
+                  DATE: {activeSession.date} • TIMING: {activeSession.timing} | ROOM {currentRoom.roomConfig.roomNumber} ({currentRoom.assignedCount} Candidates)
                 </div>
               </div>
 
@@ -238,12 +239,12 @@ export default function ExportPage() {
               {/* Proctor Signature Block */}
               <div className="border-t border-slate-300 pt-6 grid grid-cols-2 gap-8 text-xs text-slate-700">
                 <div className="space-y-4">
-                  <div>Invigilator Name: __________________________</div>
+                  <div>Invigilator In-Charge: __________________________</div>
                   <div>Signature: _______________________________</div>
                 </div>
                 <div className="space-y-4 text-right">
-                  <div>Chief Superintendent Seal: _________________</div>
-                  <div>Date & Timestamp: _______________________</div>
+                  <div>Chief Superintendent Seal: {collegeProfile.chiefSuperintendent}</div>
+                  <div>Date & Official Timestamp: _______________________</div>
                 </div>
               </div>
             </div>
@@ -287,14 +288,17 @@ export default function ExportPage() {
             <div className="p-8 bg-white text-slate-900 rounded-2xl border border-[#E8E2D4] shadow-sm space-y-6 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
               {/* Header */}
               <div className="border-b-2 border-slate-900 pb-4 text-center space-y-1">
-                <div className="text-xs font-bold uppercase tracking-widest text-emerald-800">
-                  University Examination Center
+                <div className="text-sm font-extrabold uppercase tracking-wide text-slate-900">
+                  {collegeProfile.collegeName.toUpperCase()}
+                </div>
+                <div className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                  {activeSession.title.toUpperCase()}
                 </div>
                 <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
-                  HALL SEATING ARRANGEMENT NOTICE
+                  EXAMINATION HALL SEATING ARRANGEMENT NOTICE
                 </h1>
                 <div className="text-sm font-semibold text-slate-700">
-                  ROOM {currentRoom.roomConfig.roomNumber} • {currentRoom.roomConfig.building} (Floor {currentRoom.roomConfig.floor})
+                  ROOM {currentRoom.roomConfig.roomNumber} • {currentRoom.roomConfig.building} (Floor {currentRoom.roomConfig.floor}) • Session: {activeSession.timing}
                 </div>
               </div>
 
@@ -322,7 +326,7 @@ export default function ExportPage() {
               {/* Footer Notice */}
               <div className="border-t border-slate-300 pt-4 flex items-center justify-between text-[11px] text-slate-500 font-mono">
                 <span>Total Candidates: {currentRoom.assignedCount}</span>
-                <span>Reporting Time: 09:00 AM • Bags & Mobiles Prohibited</span>
+                <span>Reporting Time: 15 mins prior • Bags & Mobiles Prohibited</span>
               </div>
             </div>
           )}
@@ -394,10 +398,10 @@ export default function ExportPage() {
           </div>
 
           <h3 className="text-xl font-bold text-slate-900">
-            Download Section-Wise Excel Workbook
+            Download Official {activeSession.examMode} Excel Workbook
           </h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto">
-            Generates a complete multi-sheet Excel file matching your university layout, containing individual seating charts (`Room 302`) and section-wise attendance rosters (`F-1`, `S-1`, `T-1`).
+            Exports a formatted institutional workbook with {collegeProfile.collegeName} headers, room seating plans, and section-wise attendance sheets for <strong>{activeSession.title}</strong>.
           </p>
 
           <button
@@ -405,7 +409,7 @@ export default function ExportPage() {
             className="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-emerald-600/20 flex items-center gap-2 mx-auto"
           >
             <Download className="h-4 w-4" />
-            <span>Download SeatingChart_SectionWise_Output.xlsx</span>
+            <span>Download {activeSession.examMode}_Seating_{activeSession.date}.xlsx</span>
           </button>
         </div>
       ),
@@ -418,13 +422,13 @@ export default function ExportPage() {
       <div>
         <div className="flex items-center gap-2 text-emerald-700 text-xs font-mono font-semibold uppercase tracking-wider mb-1">
           <Sparkles className="h-4 w-4 text-emerald-600" />
-          <span>Section-Wise Publishing Hub</span>
+          <span>Institutional Publishing & Output Center</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
           Export & Print Station
         </h1>
         <p className="text-xs text-slate-500 mt-1">
-          Generate section-wise signature attendance books (by column F-1/S-1/T-1 or branch cohorts), door notices, and Excel workbooks.
+          Generate section-wise signature registers, door notices, desk stickers, and university Excel files for <strong>{activeSession.title}</strong>.
         </p>
       </div>
 

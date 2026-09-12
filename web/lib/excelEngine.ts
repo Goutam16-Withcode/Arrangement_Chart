@@ -1,13 +1,23 @@
 import * as XLSX from "xlsx";
-import { RoomConfig, Student, RoomSeating } from "./types";
+import { RoomConfig, Student, RoomSeating, CollegeProfile, ExamSession } from "./types";
 
 export class ExcelEngine {
   /**
    * Export seating charts and attendance sheets to a multi-sheet .xlsx workbook
    * with Section-Wise grouped attendance records (F-1, S-1, T-1 / Branch sections).
    */
-  public static exportSeatingWorkbook(roomSeatings: RoomSeating[]): void {
+  public static exportSeatingWorkbook(
+    roomSeatings: RoomSeating[],
+    collegeProfile?: CollegeProfile,
+    activeSession?: ExamSession
+  ): void {
     const wb = XLSX.utils.book_new();
+
+    const collegeName = collegeProfile?.collegeName || "National Institute of Engineering & Technology";
+    const collegeCode = collegeProfile?.collegeCode || "NIET-1084";
+    const examTitle = activeSession?.title || "End-Semester Major Theory Exam";
+    const examDate = activeSession?.date || "28-Nov-2026";
+    const examTiming = activeSession?.timing || "09:30 AM - 12:30 PM";
 
     roomSeatings.forEach((rs) => {
       const room = rs.roomConfig;
@@ -17,7 +27,9 @@ export class ExcelEngine {
       const seatingData: any[][] = [];
 
       // Header Banner
-      seatingData.push([`EXAMINATION SEATING ARRANGEMENT - ROOM ${room.roomNumber}`]);
+      seatingData.push([collegeName.toUpperCase()]);
+      seatingData.push([`INSTITUTE CODE: ${collegeCode} | EXAM: ${examTitle.toUpperCase()}`]);
+      seatingData.push([`DATE: ${examDate} | TIMING: ${examTiming} | ROOM: ${room.roomNumber}`]);
       seatingData.push([`Building: ${room.building} | Floor: ${room.floor} | Total Capacity: ${rs.totalCapacity}`]);
       seatingData.push([]);
 
@@ -53,7 +65,6 @@ export class ExcelEngine {
       XLSX.utils.book_append_sheet(wb, wsSeating, roomTitle);
 
       // 2. Build Section-Wise Attendance Sheet
-      // Group attendance candidates by seat position (F-1, S-1, T-1)
       const sectionPositions = ["F-1", "S-1", "T-1", "F-2"].slice(0, room.studentsPerBench);
 
       const sectionGroups: { [pos: string]: typeof rs.attendanceList } = {};
@@ -67,8 +78,9 @@ export class ExcelEngine {
       );
 
       const attendanceData: any[][] = [];
-      attendanceData.push([`SECTION-WISE ATTENDANCE RECORD - ROOM ${room.roomNumber}`]);
-      attendanceData.push([`Total Candidates: ${rs.assignedCount} | Session Time: 09:30 AM`]);
+      attendanceData.push([collegeName.toUpperCase()]);
+      attendanceData.push([`SECTION-WISE CANDIDATE ATTENDANCE REGISTER • ${examTitle.toUpperCase()}`]);
+      attendanceData.push([`DATE: ${examDate} | TIME: ${examTiming} | ROOM ${room.roomNumber} (${rs.assignedCount} Candidates)`]);
       attendanceData.push([]);
 
       // Section Header Banner Row
@@ -116,19 +128,22 @@ export class ExcelEngine {
 
       // Add Branch Summary Block at the bottom
       attendanceData.push([]);
-      attendanceData.push(["SECTION BREAKDOWN SUMMARY"]);
+      attendanceData.push(["SECTION BREAKDOWN & VERIFICATION SUMMARY"]);
       sectionPositions.forEach((pos) => {
         const count = sectionGroups[pos]?.length || 0;
         const branchSample = sectionGroups[pos]?.[0]?.student.branch || "General";
         attendanceData.push([`Section ${pos} Total Candidates:`, count, `Primary Branch: ${branchSample}`]);
       });
+      attendanceData.push([]);
+      attendanceData.push(["Chief Superintendent:", collegeProfile?.chiefSuperintendent || "Prof. S. K. Narayan"]);
+      attendanceData.push(["Invigilator In-Charge:", "__________________________ (Signature)"]);
 
       const wsAttendance = XLSX.utils.aoa_to_sheet(attendanceData);
       XLSX.utils.book_append_sheet(wb, wsAttendance, `Att - Room ${room.roomNumber}`);
     });
 
-    // Write file and trigger browser download
-    XLSX.writeFile(wb, "SeatingChart_SectionWise_Output.xlsx");
+    const filePrefix = activeSession?.examMode === "MST" ? "MST_SeatingChart" : "EndSem_SeatingChart";
+    XLSX.writeFile(wb, `${filePrefix}_${examDate.replace(/-/g, "_")}.xlsx`);
   }
 
   /**

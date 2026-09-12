@@ -1,3 +1,29 @@
+export type ExamMode = "MST" | "END_SEM";
+
+export interface CollegeProfile {
+  collegeName: string;
+  collegeCode: string;
+  academicYear: string;
+  semester: string;
+  examCenterCode: string;
+  chiefSuperintendent: string;
+}
+
+export interface ExamSession {
+  id: string;
+  examMode: ExamMode;
+  title: string;
+  date: string;
+  timing: string;
+  slot: string;
+  courses: {
+    branch: string;
+    year: number;
+    code: string;
+    name: string;
+  }[];
+}
+
 export interface Student {
   id: string;
   rollNo: string;

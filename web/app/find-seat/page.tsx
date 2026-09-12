@@ -25,7 +25,7 @@ interface FoundAllocation {
 }
 
 export default function FindSeatPage() {
-  const { roomSeatings } = useSeating();
+  const { roomSeatings, collegeProfile, activeSession } = useSeating();
   const [query, setQuery] = useState("CSE2026001");
   const [searchedRoll, setSearchedRoll] = useState("CSE2026001");
 
@@ -70,13 +70,13 @@ export default function FindSeatPage() {
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
           <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          <span>Student Self-Service Portal</span>
+          <span>Student Self-Service Portal • {collegeProfile.collegeCode}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Find Your Exam Seat & Digital Pass
         </h1>
         <p className="text-xs text-slate-500">
-          Enter your university Roll Number to instantly locate your examination hall, bench, and digital entry pass.
+          Current Active Test: <strong>{activeSession.title}</strong> ({activeSession.date} • {activeSession.timing})
         </p>
 
         {/* Search Bar */}

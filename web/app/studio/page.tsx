@@ -21,6 +21,8 @@ export default function StudioPage() {
     swapSeats,
     toggleAttendance,
     recalculateSeating,
+    collegeProfile,
+    activeSession,
   } = useSeating();
 
   const [activeTab, setActiveTab] = useState<"visual" | "attendance">("visual");
@@ -33,7 +35,7 @@ export default function StudioPage() {
     ) || roomSeatings[0];
 
   const handleExportExcel = () => {
-    ExcelEngine.exportSeatingWorkbook(roomSeatings);
+    ExcelEngine.exportSeatingWorkbook(roomSeatings, collegeProfile, activeSession);
   };
 
   const sectionOptions = ["ALL", "F-1", "S-1", "T-1"].slice(
