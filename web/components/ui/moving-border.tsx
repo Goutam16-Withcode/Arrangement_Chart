@@ -11,7 +11,7 @@ import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export function Button({
-  borderRadius = "1.75rem",
+  borderRadius = "1.25rem",
   children,
   as: Component = "button",
   containerClassName,
@@ -32,7 +32,7 @@ export function Button({
   return (
     <Component
       className={cn(
-        "bg-transparent relative text-xl p-[1px] overflow-hidden md:col-span-2",
+        "bg-transparent relative text-xl p-[1px] overflow-hidden md:col-span-2 shadow-md shadow-emerald-900/5",
         containerClassName
       )}
       style={{
@@ -47,7 +47,7 @@ export function Button({
         <MovingBorder duration={duration} rx="30%" ry="30%">
           <div
             className={cn(
-              "h-20 w-20 opacity-[0.8] bg-[radial-gradient(var(--indigo-500)_40%,transparent_60%)]",
+              "h-20 w-20 opacity-[0.9] bg-[radial-gradient(#10b981_40%,transparent_60%)]",
               borderClassName
             )}
           />
@@ -56,7 +56,7 @@ export function Button({
 
       <div
         className={cn(
-          "relative bg-slate-900/[0.8] border border-slate-800 backdrop-blur-xl text-white flex items-center justify-center w-full h-full text-sm antialiased",
+          "relative bg-white border border-[#E5E0D3] text-slate-800 flex items-center justify-center w-full h-full text-sm antialiased font-semibold hover:bg-emerald-50/40 transition",
           className
         )}
         style={{
@@ -82,7 +82,7 @@ export const MovingBorder = ({
   ry?: string;
   [key: string]: any;
 }) => {
-  const pathRef = useRef<any>();
+  const pathRef = useRef<any>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame((time) => {

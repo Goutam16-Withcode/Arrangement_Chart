@@ -8,7 +8,7 @@ export const RoomSelector = () => {
   const { roomSeatings, selectedRoomNumber, setSelectedRoomNumber } = useSeating();
 
   return (
-    <div className="flex items-center gap-2 overflow-x-auto pb-2 no-visible-scrollbar">
+    <div className="flex items-center gap-2 overflow-x-auto pb-1 no-visible-scrollbar">
       {roomSeatings.map((rs) => {
         const isSelected = rs.roomConfig.roomNumber === selectedRoomNumber;
         const occupancyRate = Math.round(
@@ -21,25 +21,25 @@ export const RoomSelector = () => {
             onClick={() => setSelectedRoomNumber(rs.roomConfig.roomNumber)}
             className={`flex-shrink-0 px-4 py-2.5 rounded-2xl border text-left transition-all duration-200 flex items-center gap-3 ${
               isSelected
-                ? "bg-gradient-to-r from-indigo-900/60 to-purple-900/60 border-indigo-500 text-white shadow-lg shadow-indigo-500/20"
-                : "bg-slate-900/60 border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-800/60"
+                ? "bg-emerald-50 border-emerald-500 text-emerald-950 shadow-sm"
+                : "bg-white border-[#E8E2D4] text-slate-700 hover:border-emerald-300 hover:bg-[#FDFBF7]"
             }`}
           >
             <div
               className={`p-2 rounded-xl ${
                 isSelected
-                  ? "bg-indigo-500 text-white"
-                  : "bg-slate-800 text-slate-400"
+                  ? "bg-emerald-600 text-white shadow-xs"
+                  : "bg-[#F3EFE6] text-slate-600"
               }`}
             >
               <DoorOpen className="h-4 w-4" />
             </div>
 
             <div>
-              <div className="text-xs font-bold font-mono">
+              <div className="text-xs font-bold font-mono text-slate-900">
                 Room {rs.roomConfig.roomNumber}
               </div>
-              <div className="text-[10px] text-slate-400">
+              <div className="text-[10px] text-slate-500">
                 {rs.assignedCount}/{rs.totalCapacity} ({occupancyRate}%)
               </div>
             </div>
@@ -49,9 +49,9 @@ export const RoomSelector = () => {
 
       <Link
         href="/builder"
-        className="flex-shrink-0 px-3.5 py-2.5 rounded-2xl border border-dashed border-slate-800 hover:border-indigo-500 text-slate-400 hover:text-indigo-300 text-xs font-medium flex items-center gap-1.5 transition"
+        className="flex-shrink-0 px-3.5 py-2.5 rounded-2xl border border-dashed border-[#DDD7C8] hover:border-emerald-500 bg-white hover:bg-emerald-50/50 text-slate-600 hover:text-emerald-800 text-xs font-semibold flex items-center gap-1.5 transition"
       >
-        <Plus className="h-4 w-4" />
+        <Plus className="h-4 w-4 text-emerald-600" />
         <span>New Room</span>
       </Link>
     </div>

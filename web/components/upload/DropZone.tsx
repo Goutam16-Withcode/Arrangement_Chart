@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { UploadCloud, FileSpreadsheet, CheckCircle2, AlertCircle } from "lucide-react";
+import { UploadCloud, FileSpreadsheet, CheckCircle2 } from "lucide-react";
 import { ExcelEngine } from "@/lib/excelEngine";
 import { useSeating } from "@/lib/context/SeatingContext";
 
@@ -23,7 +23,6 @@ export const DropZone = () => {
         size: `${Math.round(file.size / 1024)} KB`,
       });
 
-      // Check if it's a room layout or roll number sheet
       if (file.name.toLowerCase().includes("room") || file.name.toLowerCase().includes("excel sheet")) {
         try {
           const rooms = await ExcelEngine.parseRoomLayoutFile(file);
@@ -62,8 +61,8 @@ export const DropZone = () => {
         }}
         className={`border-2 border-dashed rounded-3xl p-8 text-center transition-all duration-300 relative overflow-hidden ${
           isDragging
-            ? "border-indigo-500 bg-indigo-950/20 scale-[1.01]"
-            : "border-slate-800 bg-slate-900/40 hover:border-slate-700"
+            ? "border-emerald-500 bg-emerald-50 scale-[1.01]"
+            : "border-[#DDD7C8] bg-white hover:border-emerald-400 shadow-xs"
         }`}
       >
         <input
@@ -76,20 +75,20 @@ export const DropZone = () => {
         />
 
         <div className="flex flex-col items-center justify-center space-y-3">
-          <div className="p-4 rounded-2xl bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 text-indigo-400">
+          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-xs">
             <UploadCloud className="h-8 w-8" />
           </div>
 
           <div>
-            <h3 className="text-base font-bold text-white tracking-wide">
+            <h3 className="text-base font-bold text-slate-900 tracking-wide">
               Drag & Drop your Excel Workbooks here
             </h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
               Supports Room Layouts (`Room Number`, `Rows`, `Benches`) and Roll Number Lists (`F-1`, `S-1`, `T-1`).
             </p>
           </div>
 
-          <div className="text-[11px] font-mono px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+          <div className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-[#F5F2EA] text-slate-700 border border-[#E0D9CB]">
             Click to Browse or Drop .xlsx files
           </div>
         </div>
@@ -97,8 +96,8 @@ export const DropZone = () => {
 
       {/* Status notification */}
       {statusMessage && (
-        <div className="p-3 bg-emerald-950/60 border border-emerald-800/60 rounded-xl text-xs text-emerald-300 flex items-center gap-2">
-          <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-emerald-400" />
+        <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-center gap-2 font-medium">
+          <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-emerald-600" />
           <span>{statusMessage}</span>
         </div>
       )}
@@ -109,11 +108,11 @@ export const DropZone = () => {
           {uploadedFiles.map((f, i) => (
             <div
               key={i}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs"
+              className="p-2.5 rounded-xl bg-white border border-[#E8E2D4] flex items-center justify-between text-xs shadow-2xs"
             >
               <div className="flex items-center gap-2 truncate">
-                <FileSpreadsheet className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-                <span className="text-slate-200 font-mono truncate">{f.name}</span>
+                <FileSpreadsheet className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                <span className="text-slate-800 font-mono font-medium truncate">{f.name}</span>
               </div>
               <span className="text-[10px] text-slate-500 font-mono ml-2">{f.size}</span>
             </div>

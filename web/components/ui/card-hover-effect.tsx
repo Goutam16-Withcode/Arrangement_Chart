@@ -22,7 +22,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-6",
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-6 gap-2",
         className
       )}
     >
@@ -30,14 +30,14 @@ export const HoverEffect = ({
         <Link
           href={item?.link}
           key={item?.link}
-          className="relative group  block p-2 h-full w-full"
+          className="relative group block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 h-full w-full bg-indigo-500/[0.15] block rounded-3xl"
+                className="absolute inset-0 h-full w-full bg-emerald-100/60 block rounded-3xl"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -51,22 +51,22 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <div className="rounded-2xl h-full w-full p-6 overflow-hidden bg-slate-900/70 border border-slate-800/80 group-hover:border-indigo-500/40 relative z-20 backdrop-blur-xl transition duration-300">
+          <div className="rounded-2xl h-full w-full p-6 overflow-hidden bg-white border border-[#E8E2D4] group-hover:border-emerald-400/80 relative z-20 shadow-sm transition duration-300">
             <div className="relative z-50">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+                <div className="p-3 bg-emerald-50 border border-emerald-200/60 rounded-xl text-emerald-700">
                   {item.icon}
                 </div>
                 {item.badge && (
-                  <span className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-full">
                     {item.badge}
                   </span>
                 )}
               </div>
-              <h4 className="text-slate-100 font-bold tracking-wide text-lg mt-2">
+              <h4 className="text-slate-900 font-bold tracking-tight text-lg mt-2">
                 {item.title}
               </h4>
-              <p className="mt-3 text-slate-400 tracking-wide leading-relaxed text-sm">
+              <p className="mt-2 text-slate-500 tracking-normal leading-relaxed text-xs">
                 {item.description}
               </p>
             </div>

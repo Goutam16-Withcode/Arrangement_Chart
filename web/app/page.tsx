@@ -15,7 +15,7 @@ import {
   Zap,
   ArrowRight,
   Sliders,
-  CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 import { useSeating } from "@/lib/context/SeatingContext";
 
@@ -74,27 +74,27 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="relative overflow-hidden min-h-screen">
-      {/* Background Spotlight */}
+    <div className="relative overflow-hidden min-h-screen bg-[#FBF9F4]">
+      {/* Background Spotlight with Light Green Mint glow */}
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="#818cf8"
+        fill="#34d399"
       />
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10 text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-8 animate-pulse-glow">
-          <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-8 animate-pulse-glow shadow-xs">
+          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
           <span>Next-Generation Algorithmic Exam Seating Studio</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight">
           Exam Seating without{" "}
           <span className="text-gradient">Conflicts</span>. Automated in{" "}
           <span className="text-gradient-cyan">Seconds</span>.
         </h1>
 
-        <p className="mt-6 text-base sm:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
           Upgrade from static spreadsheets to a dynamic 2D visual seating suite.
           Features constraint-satisfaction branch interleaving, visual room builders,
           and digital QR attendance passes.
@@ -105,77 +105,75 @@ export default function HomePage() {
           <Link href="/studio">
             <MovingBorderButton
               borderRadius="1.25rem"
-              className="bg-slate-950 text-white border-slate-800 px-6 py-3 font-semibold text-sm flex items-center gap-2 hover:bg-slate-900 transition"
+              className="bg-emerald-600 text-white border-emerald-500 px-6 py-3 font-bold text-sm flex items-center gap-2 hover:bg-emerald-700 shadow-md shadow-emerald-600/25 transition"
             >
               <span>Launch Seating Studio</span>
-              <ArrowRight className="h-4 w-4 text-indigo-400" />
+              <ArrowRight className="h-4 w-4 text-emerald-100" />
             </MovingBorderButton>
           </Link>
 
           <Link
             href="/dashboard"
-            className="px-6 py-3 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/60 text-sm font-semibold transition flex items-center gap-2"
+            className="px-6 py-3 rounded-2xl bg-white hover:bg-emerald-50/50 text-slate-800 border border-[#E0D9CB] text-sm font-semibold transition flex items-center gap-2 shadow-xs"
           >
-            <Sliders className="h-4 w-4" />
+            <Sliders className="h-4 w-4 text-emerald-700" />
             <span>Open Dashboard</span>
           </Link>
         </div>
 
         {/* Sparkles Particle Divider */}
-        <div className="w-full h-24 relative mt-12">
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
-          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
-          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+        <div className="w-full h-20 relative mt-12">
+          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-emerald-400 to-transparent h-[2px] w-3/4 blur-xs" />
+          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-emerald-500 to-transparent h-px w-3/4" />
 
           <SparklesCore
             background="transparent"
             minSize={0.4}
             maxSize={1.8}
-            particleDensity={70}
+            particleDensity={60}
             className="w-full h-full"
-            particleColor="#a5b4fc"
+            particleColor="#059669"
           />
 
-          <div className="absolute inset-0 w-full h-full bg-[#090D16] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+          <div className="absolute inset-0 w-full h-full bg-[#FBF9F4] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
         </div>
       </section>
 
       {/* Live Metrics Showcase */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl glass-panel text-center">
-            <div className="text-3xl font-extrabold text-white font-mono">
+          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
+            <div className="text-3xl font-extrabold text-slate-900 font-mono">
               {metrics.totalRooms}
             </div>
-            <div className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
               Exam Halls Ready
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl glass-panel text-center">
-            <div className="text-3xl font-extrabold text-indigo-400 font-mono">
+          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
+            <div className="text-3xl font-extrabold text-emerald-600 font-mono">
               {metrics.seatedStudents}
             </div>
-            <div className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
               Students Seated
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl glass-panel text-center">
-            <div className="text-3xl font-extrabold text-emerald-400 font-mono">
+          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
+            <div className="text-3xl font-extrabold text-teal-600 font-mono">
               {metrics.conflictFreeRate}%
             </div>
-            <div className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
               Zero Conflict Rate
             </div>
           </div>
 
-          <div className="p-5 rounded-2xl glass-panel text-center">
-            <div className="text-3xl font-extrabold text-pink-400 font-mono">
+          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
+            <div className="text-3xl font-extrabold text-lime-700 font-mono">
               {metrics.utilizationRate}%
             </div>
-            <div className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
               Capacity Utilization
             </div>
           </div>
@@ -185,10 +183,10 @@ export default function HomePage() {
       {/* Quick Excel Ingestion Dropzone */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-white tracking-tight">
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
             Upload Layout & Roll Lists
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Drop your institutional spreadsheets to instantly calculate optimal seat plans.
           </p>
         </div>
@@ -198,10 +196,10 @@ export default function HomePage() {
       {/* Feature Navigation Grid (CardHoverEffect) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
         <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Complete Suite of Modern Tools
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Everything you need for seamless exam management in one unified platform.
           </p>
         </div>

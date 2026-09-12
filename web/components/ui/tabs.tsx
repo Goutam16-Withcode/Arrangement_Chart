@@ -38,7 +38,7 @@ export const Tabs = ({
     <>
       <div
         className={cn(
-          "flex flex-row items-center justify-start [perspective:1000px] relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full gap-2 p-1.5 bg-slate-900/80 border border-slate-800 rounded-2xl backdrop-blur-xl",
+          "flex flex-row items-center justify-start relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full gap-2 p-1.5 bg-[#F4F0E6] border border-[#E5DFD1] rounded-2xl",
           containerClassName
         )}
       >
@@ -49,7 +49,7 @@ export const Tabs = ({
               moveSelectedTabToTop(idx);
             }}
             className={cn(
-              "relative px-4 py-2.5 rounded-xl text-sm font-medium transition duration-200 flex items-center gap-2",
+              "relative px-4 py-2.5 rounded-xl text-xs font-bold transition duration-200 flex items-center gap-2",
               tabClassName
             )}
             style={{
@@ -61,13 +61,18 @@ export const Tabs = ({
                 layoutId="clickedbutton"
                 transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
                 className={cn(
-                  "absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl",
+                  "absolute inset-0 bg-emerald-600 rounded-xl shadow-md shadow-emerald-600/20",
                   activeTabClassName
                 )}
               />
             )}
 
-            <span className="relative z-20 flex items-center gap-2 text-white">
+            <span
+              className={cn(
+                "relative z-20 flex items-center gap-2 transition",
+                active.value === tab.value ? "text-white" : "text-slate-600 hover:text-emerald-800"
+              )}
+            >
               {tab.icon}
               {tab.title}
             </span>

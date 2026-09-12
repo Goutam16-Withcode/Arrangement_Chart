@@ -15,14 +15,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#090D16] text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+    <html lang="en">
+      <body className="min-h-screen bg-[#FBF9F4] text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
         <SeatingProvider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen bg-[#FBF9F4]">
             <Navbar />
             <main className="flex-1">{children}</main>
-            <footer className="glass-panel border-t border-slate-800/80 py-6 text-center text-xs text-slate-500 font-mono">
-              Smart Exam Seating Arrangement Studio • Built with Next.js & Aceternity UI
+            <footer className="glass-panel border-t border-[#E8E2D4] py-6 text-center text-xs text-slate-500 font-mono">
+              Smart Exam Seating Arrangement Studio • Cream, White & Light Green Edition
             </footer>
           </div>
         </SeatingProvider>
