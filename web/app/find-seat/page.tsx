@@ -65,22 +65,22 @@ export default function FindSeatPage() {
   const allocation: FoundAllocation | null = foundAllocation;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 bg-[#FBF9F4]">
+    <div className="space-y-8">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D4F754] text-black text-xs font-black">
+          <span>✦</span>
           <span>{collegeProfile.collegeName} • {collegeProfile.collegeCode}</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
           Find Your Exam Seat & Digital Pass
         </h1>
-        <p className="text-xs text-slate-500">
-          Current Active Test: <strong>{activeSession.title}</strong> ({activeSession.date} • {activeSession.timing})
+        <p className="text-xs text-slate-500 font-medium">
+          Active Test: <strong>{activeSession.title}</strong> ({activeSession.date} • {activeSession.timing})
         </p>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="pt-4 flex items-center gap-2 max-w-md mx-auto">
+        <form onSubmit={handleSearch} className="pt-3 flex items-center gap-2 max-w-md mx-auto">
           <div className="relative flex-1">
             <Search className="h-4 w-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
@@ -88,12 +88,12 @@ export default function FindSeatPage() {
               placeholder="e.g. CSE2026001, ME2026012, or Name..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white border border-[#E0D9CB] text-xs font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition shadow-xs"
+              className="w-full pl-10 pr-4 py-3 rounded-full bg-white border border-slate-200 text-xs font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-400 transition shadow-2xs"
             />
           </div>
           <button
             type="submit"
-            className="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-emerald-600/20"
+            className="px-6 py-3 rounded-full bg-[#161618] hover:bg-black text-white font-bold text-xs tracking-wider uppercase transition shadow-sm"
           >
             Locate
           </button>

@@ -1,101 +1,107 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8f7f4;
-  --foreground: #0f172a;
+  --background: #D2DEB1;
+  --foreground: #121214;
+  --shell-dark: #161618;
+  --shell-light: #F2F3F5;
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #059669;
-  --primary-foreground: #ffffff;
-  --secondary: #f0fdf4;
-  --secondary-foreground: #065f46;
-  --muted: #f3efe6;
-  --muted-foreground: #64748b;
-  --accent: #ecfdf5;
-  --accent-foreground: #047857;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #e6e1d6;
-  --input: #e6e1d6;
-  --ring: #10b981;
+  --card-foreground: #121214;
+  --neon-lime: #D4F754;
+  --soft-lilac: #B8B5FF;
+  --charcoal: #1E1E22;
+  --primary: #D4F754;
+  --primary-foreground: #121214;
+  --secondary: #B8B5FF;
+  --secondary-foreground: #121214;
+  --muted: #E5E7EB;
+  --muted-foreground: #71717A;
+  --border: #E5E7EB;
 }
 
 body {
-  background-color: #f8f7f4;
-  color: #0f172a;
+  background-color: #D2DEB1;
+  color: #121214;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  padding: 1rem;
 }
 
-/* Glassmorphism & Elevated Card Panels */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+@media (min-width: 768px) {
+  body {
+    padding: 1.5rem;
+  }
 }
 
-.glass-card {
-  background: #ffffff;
-  border: 1px solid #e7e3da;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+/* Outer Shell & Bento Styling */
+.app-outer-shell {
+  background-color: #161618;
+  border-radius: 36px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.main-content-panel {
+  background-color: #F2F3F5;
+  border-radius: 28px;
+}
+
+.bento-card {
+  background-color: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.03);
   transition: all 0.2s ease-in-out;
 }
 
-.glass-card:hover {
-  border-color: #a7f3d0;
-  box-shadow: 0 12px 28px -6px rgba(5, 150, 105, 0.08);
-  transform: translateY(-2px);
+.bento-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
 
-/* Custom modern scrollbars in soft cream */
+.bento-card-dark {
+  background-color: #1A1A1E;
+  color: #FFFFFF;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Custom modern scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8f7f4;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d1fae5;
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6ee7b7;
+  background: rgba(0, 0, 0, 0.25);
 }
 
-/* Glowing text gradients */
-.text-gradient {
-  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #047857 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Striped Bar Chart Background Pattern */
+.bg-striped-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 6px
+  );
 }
 
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-@keyframes pulseSoft {
-  0%, 100% {
-    opacity: 0.85;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.02);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulseSoft 3s ease-in-out infinite;
+.bg-striped-pattern-dark {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.12),
+    rgba(0, 0, 0, 0.12) 2px,
+    transparent 2px,
+    transparent 6px
+  );
 }

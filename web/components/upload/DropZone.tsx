@@ -61,8 +61,8 @@ export const DropZone = () => {
         }}
         className={`border-2 border-dashed rounded-3xl p-8 text-center transition-all duration-300 relative overflow-hidden ${
           isDragging
-            ? "border-emerald-500 bg-emerald-50 scale-[1.01]"
-            : "border-[#DDD7C8] bg-white hover:border-emerald-400 shadow-xs"
+            ? "border-black bg-[#D4F754]/20 scale-[1.01]"
+            : "border-slate-300 bg-white hover:border-black shadow-xs"
         }`}
       >
         <input
@@ -75,20 +75,20 @@ export const DropZone = () => {
         />
 
         <div className="flex flex-col items-center justify-center space-y-3">
-          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-xs">
+          <div className="p-4 rounded-2xl bg-[#161618] text-[#D4F754] shadow-sm">
             <UploadCloud className="h-8 w-8" />
           </div>
 
           <div>
-            <h3 className="text-base font-bold text-slate-900 tracking-wide">
+            <h3 className="text-base font-black text-slate-900 tracking-tight">
               Drag & Drop your Excel Workbooks here
             </h3>
-            <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+            <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto font-medium">
               Supports Room Layouts (`Room Number`, `Rows`, `Benches`) and Roll Number Lists (`F-1`, `S-1`, `T-1`).
             </p>
           </div>
 
-          <div className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-[#F5F2EA] text-slate-700 border border-[#E0D9CB]">
+          <div className="text-[11px] font-bold px-4 py-1.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
             Click to Browse or Drop .xlsx files
           </div>
         </div>
@@ -96,7 +96,7 @@ export const DropZone = () => {
 
       {/* Status notification */}
       {statusMessage && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-center gap-2 font-medium">
+        <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-900 flex items-center gap-2 font-bold shadow-2xs">
           <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-emerald-600" />
           <span>{statusMessage}</span>
         </div>
@@ -108,13 +108,15 @@ export const DropZone = () => {
           {uploadedFiles.map((f, i) => (
             <div
               key={i}
-              className="p-2.5 rounded-xl bg-white border border-[#E8E2D4] flex items-center justify-between text-xs shadow-2xs"
+              className="p-3 rounded-2xl bg-white border border-slate-200 flex items-center justify-between text-xs shadow-2xs"
             >
-              <div className="flex items-center gap-2 truncate">
-                <FileSpreadsheet className="h-4 w-4 text-emerald-600 flex-shrink-0" />
-                <span className="text-slate-800 font-mono font-medium truncate">{f.name}</span>
+              <div className="flex items-center gap-2.5 truncate">
+                <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-800 flex-shrink-0">
+                  <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
+                </div>
+                <span className="text-slate-900 font-bold truncate">{f.name}</span>
               </div>
-              <span className="text-[10px] text-slate-500 font-mono ml-2">{f.size}</span>
+              <span className="text-[10px] text-slate-500 font-mono ml-2 font-semibold">{f.size}</span>
             </div>
           ))}
         </div>

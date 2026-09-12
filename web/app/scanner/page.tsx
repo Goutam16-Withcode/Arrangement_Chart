@@ -131,20 +131,19 @@ export default function ScannerPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FBF9F4]">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-semibold uppercase tracking-wider mb-1 flex-wrap">
-            <Sparkles className="h-4 w-4 text-emerald-600" />
-            <span className="font-bold">{collegeProfile.collegeName}</span>
+          <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 flex-wrap text-slate-800">
+            <span>✦ {collegeProfile.collegeName}</span>
             <span className="text-slate-400">•</span>
             <span>{activeSession.title}</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px]">
+            <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">
               {activeSession.date}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             Live QR & Photo Attendance Scanner
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -155,44 +154,44 @@ export default function ScannerPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={simulateQuickScan}
-            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-2 shadow-md shadow-emerald-600/20"
+            className="px-5 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-bold transition flex items-center gap-2 shadow-sm"
           >
-            <Zap className="h-4 w-4" />
+            <Zap className="h-4 w-4 text-[#D4F754]" />
             <span>Simulate Live Desk Scan</span>
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Scanner Viewport & Manual Input */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-5">
+          <div className="bento-card p-6 space-y-5">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-mono flex items-center gap-2">
-                <Camera className="h-4 w-4 text-emerald-600" />
+                <Camera className="h-4 w-4 text-slate-900" />
                 <span>Optical QR Scanner Viewport</span>
               </h3>
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+              <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#D4F754] text-black border border-black/10 flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-black animate-ping" />
                 Camera Ready
               </span>
             </div>
 
             {/* Simulated Animated Scanner Lens */}
-            <div className="relative w-full h-64 rounded-2xl bg-[#1E262B] border-2 border-dashed border-emerald-500/50 flex flex-col items-center justify-center overflow-hidden shadow-inner">
+            <div className="relative w-full h-64 rounded-2xl bg-[#161618] border-2 border-dashed border-[#D4F754]/40 flex flex-col items-center justify-center overflow-hidden shadow-inner">
               {/* Animated laser scan line */}
-              <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-[pulseGlow_2s_ease-in-out_infinite] top-1/2 shadow-lg shadow-emerald-400" />
+              <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#D4F754] to-transparent animate-[pulseGlow_2s_ease-in-out_infinite] top-1/2 shadow-lg shadow-[#D4F754]" />
 
               {/* QR Framing guide */}
-              <div className="w-40 h-40 border-2 border-emerald-400/80 rounded-2xl relative flex items-center justify-center">
-                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-emerald-300 -translate-x-1 -translate-y-1" />
-                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-emerald-300 translate-x-1 -translate-y-1" />
-                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-emerald-300 -translate-x-1 translate-y-1" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-emerald-300 translate-x-1 translate-y-1" />
-                <QrCode className="h-16 w-16 text-emerald-400/40 animate-pulse" />
+              <div className="w-40 h-40 border-2 border-[#D4F754]/80 rounded-2xl relative flex items-center justify-center">
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#D4F754] -translate-x-1 -translate-y-1" />
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#D4F754] translate-x-1 -translate-y-1" />
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#D4F754] -translate-x-1 translate-y-1" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#D4F754] translate-x-1 translate-y-1" />
+                <QrCode className="h-16 w-16 text-[#D4F754]/40 animate-pulse" />
               </div>
 
-              <div className="text-[11px] text-emerald-200/80 font-mono mt-3">
+              <div className="text-[11px] text-slate-300 font-mono mt-3">
                 Align QR Code within the frame
               </div>
             </div>
@@ -210,11 +209,11 @@ export default function ScannerPage() {
                 placeholder="Or type/paste Roll Code (e.g. CSE2026001)..."
                 value={manualCode}
                 onChange={(e) => setManualCode(e.target.value)}
-                className="flex-1 px-4 py-2.5 rounded-xl bg-[#FAF8F3] border border-[#E2DCCE] text-xs font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
+                className="flex-1 px-4 py-2.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-slate-400"
               />
               <button
                 type="submit"
-                className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition"
+                className="px-5 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition"
               >
                 Verify
               </button>
@@ -223,30 +222,30 @@ export default function ScannerPage() {
 
           {/* Quick Stats Bar */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E2D4] text-center shadow-2xs">
-              <div className="text-xl font-bold font-mono text-emerald-600">
+            <div className="bento-card p-4 text-center">
+              <div className="text-xl font-black font-mono text-slate-900">
                 {scanHistory.length}
               </div>
-              <div className="text-[10px] text-slate-500 font-semibold uppercase mt-0.5">
+              <div className="text-[10px] text-slate-400 font-bold uppercase mt-0.5">
                 Total Scanned
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E2D4] text-center shadow-2xs">
-              <div className="text-xl font-bold font-mono text-slate-900">
+            <div className="bento-card p-4 text-center">
+              <div className="text-xl font-black font-mono text-slate-900">
                 {scanHistory.filter((s) => s.status === "Verified").length}
               </div>
-              <div className="text-[10px] text-slate-500 font-semibold uppercase mt-0.5">
+              <div className="text-[10px] text-slate-400 font-bold uppercase mt-0.5">
                 Verified In
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white border border-[#E8E2D4] text-center shadow-2xs">
-              <div className="text-xl font-bold font-mono text-amber-600">
+            <div className="bento-card p-4 text-center">
+              <div className="text-xl font-black font-mono text-amber-600">
                 {scanHistory.filter((s) => s.status === "Invalid Room").length}
               </div>
-              <div className="text-[10px] text-slate-500 font-semibold uppercase mt-0.5">
-                Alerts / Mismatch
+              <div className="text-[10px] text-slate-400 font-bold uppercase mt-0.5">
+                Alerts
               </div>
             </div>
           </div>
@@ -256,15 +255,15 @@ export default function ScannerPage() {
         <div className="lg:col-span-6 space-y-6">
           {/* Active Candidate Photo Match Card */}
           {latestScan ? (
-            <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E8E2D4] pb-3">
+            <div className="bento-card p-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <span className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">
                   Biometric & Photo ID Match
                 </span>
                 <span
                   className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
                     latestScan.status === "Verified"
-                      ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                      ? "bg-[#D4F754] text-black"
                       : latestScan.status === "Already Scanned"
                       ? "bg-amber-100 text-amber-800 border border-amber-300"
                       : "bg-red-100 text-red-800 border border-red-300"
@@ -275,7 +274,7 @@ export default function ScannerPage() {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="h-20 w-20 rounded-2xl border-2 border-emerald-400 bg-slate-100 overflow-hidden shadow-sm flex-shrink-0">
+                <div className="h-20 w-20 rounded-2xl border-2 border-black bg-slate-100 overflow-hidden shadow-sm flex-shrink-0">
                   <img
                     src={latestScan.photoUrl}
                     alt={latestScan.name}
@@ -284,49 +283,49 @@ export default function ScannerPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-slate-900 leading-tight">
+                  <h3 className="text-lg font-black text-slate-900 leading-tight">
                     {latestScan.name}
                   </h3>
-                  <div className="text-xs font-mono font-bold text-emerald-700">
+                  <div className="text-xs font-mono font-bold text-slate-800">
                     {latestScan.rollNo}
                   </div>
-                  <div className="text-xs text-slate-600">
+                  <div className="text-xs text-slate-500">
                     Department: <strong>{latestScan.branch}</strong>
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2 text-xs">
-                <div className="p-2.5 rounded-xl bg-[#FAF8F3] border border-[#E8E2D4]">
-                  <span className="text-slate-500 block text-[10px] uppercase font-mono">
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">
                     Assigned Room
                   </span>
-                  <span className="font-bold text-slate-800 font-mono">
+                  <span className="font-bold text-slate-900 font-mono">
                     Room {latestScan.roomNumber}
                   </span>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-[#FAF8F3] border border-[#E8E2D4]">
-                  <span className="text-slate-500 block text-[10px] uppercase font-mono">
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                  <span className="text-slate-400 block text-[10px] uppercase font-mono">
                     Desk Coordinate
                   </span>
-                  <span className="font-bold text-emerald-800 font-mono">
+                  <span className="font-bold text-slate-900 font-mono">
                     Bench {latestScan.benchIndex} ({latestScan.positionLabel})
                   </span>
                 </div>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center justify-between font-semibold">
+              <div className="p-3 rounded-2xl bg-slate-100 text-xs text-slate-800 flex items-center justify-between font-semibold">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <CheckCircle2 className="h-4 w-4 text-black" />
                   <span>Attendance Timestamp Recorded</span>
                 </div>
-                <span className="font-mono text-[10px]">{latestScan.timestamp}</span>
+                <span className="font-mono text-[10px] font-bold">{latestScan.timestamp}</span>
               </div>
             </div>
           ) : (
-            <div className="bg-white border border-[#E8E2D4] p-10 rounded-3xl shadow-sm text-center space-y-2">
-              <QrCode className="h-10 w-10 text-emerald-600 mx-auto opacity-40" />
+            <div className="bento-card p-10 text-center space-y-2">
+              <QrCode className="h-10 w-10 text-slate-400 mx-auto" />
               <h4 className="text-sm font-bold text-slate-900">Awaiting First Scan</h4>
               <p className="text-xs text-slate-500">
                 Click &quot;Simulate Live Desk Scan&quot; or enter a roll number to inspect verification.
@@ -335,7 +334,7 @@ export default function ScannerPage() {
           )}
 
           {/* Live Check-in Stream */}
-          <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-3">
+          <div className="bento-card p-6 space-y-3">
             <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
               Live Invigilator Scan Stream
             </h4>
@@ -345,10 +344,10 @@ export default function ScannerPage() {
                 scanHistory.map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-2.5 rounded-xl bg-[#FAF8F3] border border-[#E8E2D4] flex items-center justify-between text-xs"
+                    className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
                   >
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0" />
+                      <span className="h-2 w-2 rounded-full bg-[#D4F754]" />
                       <span className="font-bold font-mono text-slate-900">
                         {item.rollNo}
                       </span>
@@ -366,7 +365,7 @@ export default function ScannerPage() {
                 ))
               ) : (
                 <div className="py-4 text-center text-xs text-slate-400 italic">
-                  No scan events recorded in this session yet.
+                  No check-ins yet. Live log will appear as students are scanned.
                 </div>
               )}
             </div>

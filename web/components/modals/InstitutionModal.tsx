@@ -208,42 +208,42 @@ export const InstitutionModal = () => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ type: "spring", stiffness: 350, damping: 28 }}
-          className="bg-white rounded-3xl border border-[#E8E2D4] shadow-2xl w-full max-w-3xl overflow-hidden max-h-[92vh] flex flex-col"
+          className="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-3xl overflow-hidden max-h-[92vh] flex flex-col"
         >
           {/* Modal Header */}
-          <div className="p-5 sm:p-6 bg-gradient-to-r from-[#FAF8F3] to-[#F4EFE6] border-b border-[#E8E2D4] flex items-center justify-between">
+          <div className="p-5 sm:p-6 bg-[#161618] text-white flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20">
+              <div className="h-10 w-10 rounded-2xl bg-[#D4F754] text-black flex items-center justify-center font-bold shadow-sm">
                 <Building2 className="h-5 w-5" />
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                <h2 className="text-lg sm:text-xl font-black tracking-tight flex items-center gap-2">
                   <span>Institution & Exam Session Settings</span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    Generalized
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#D4F754] text-black">
+                    Customizer
                   </span>
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Universal institutional customizer. Automatically updates seating charts, attendance sheets, and passes.
+                <p className="text-xs text-slate-400 mt-0.5 font-medium">
+                  Automatically updates seating charts, attendance sheets, and passes across the suite.
                 </p>
               </div>
             </div>
 
             <button
               onClick={() => setIsConfigModalOpen(false)}
-              className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-white/80 transition border border-transparent hover:border-[#E8E2D4]"
+              className="p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition"
             >
               <X className="h-5 w-5" />
             </button>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-[#E8E2D4] bg-[#FAF8F3] px-6 gap-2 pt-2">
+          <div className="flex border-b border-slate-200 bg-slate-100 px-6 gap-2 pt-2">
             <button
               onClick={() => setActiveTab("profile")}
               className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-2 border-b-2 ${
                 activeTab === "profile"
-                  ? "border-emerald-600 text-emerald-900 font-extrabold"
+                  ? "border-black text-black font-extrabold"
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -255,7 +255,7 @@ export const InstitutionModal = () => {
               onClick={() => setActiveTab("session")}
               className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-2 border-b-2 ${
                 activeTab === "session"
-                  ? "border-emerald-600 text-emerald-900 font-extrabold"
+                  ? "border-black text-black font-extrabold"
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
@@ -267,17 +267,17 @@ export const InstitutionModal = () => {
               onClick={() => setActiveTab("presets")}
               className={`pb-3 px-3 text-xs font-bold transition flex items-center gap-2 border-b-2 ${
                 activeTab === "presets"
-                  ? "border-emerald-600 text-emerald-900 font-extrabold"
+                  ? "border-black text-black font-extrabold"
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
-              <Sparkles className="h-4 w-4 text-emerald-600" />
+              <Sparkles className="h-4 w-4 text-black" />
               <span>1-Click Presets</span>
             </button>
           </div>
 
           {/* Modal Body */}
-          <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-[#FBF9F4]">
+          <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-[#F2F3F5]">
             {/* Tab 1: College Profile */}
             {activeTab === "profile" && (
               <div className="space-y-4">
@@ -520,7 +520,7 @@ export const InstitutionModal = () => {
           </div>
 
           {/* Modal Footer Actions */}
-          <div className="p-4 sm:p-5 bg-white border-t border-[#E8E2D4] flex items-center justify-between gap-3">
+          <div className="p-4 sm:p-5 bg-white border-t border-slate-200 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => {
@@ -535,7 +535,7 @@ export const InstitutionModal = () => {
                 setSessionTiming("09:30 AM - 12:30 PM (3.0 Hours)");
                 setSessionSlot("Slot 1 (Morning)");
               }}
-              className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-[#FAF8F3] transition flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition flex items-center gap-1.5"
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Reset Fields</span>
@@ -545,7 +545,7 @@ export const InstitutionModal = () => {
               <button
                 type="button"
                 onClick={() => setIsConfigModalOpen(false)}
-                className="px-4 py-2 rounded-xl border border-[#E0D9CB] bg-[#FAF8F3] hover:bg-[#F3EFE6] text-slate-700 text-xs font-bold transition"
+                className="px-4 py-2 rounded-full border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold transition shadow-2xs"
               >
                 Cancel
               </button>
@@ -553,9 +553,9 @@ export const InstitutionModal = () => {
               <button
                 type="button"
                 onClick={() => handleSave()}
-                className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
+                className="px-6 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md"
               >
-                <Check className="h-4 w-4" />
+                <Check className="h-4 w-4 text-[#D4F754]" />
                 <span>Apply & Save Profile</span>
               </button>
             </div>

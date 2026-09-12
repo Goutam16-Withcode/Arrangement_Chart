@@ -22,20 +22,19 @@ export default function DigitalTwinPage() {
     roomSeatings[0];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FBF9F4]">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-semibold uppercase tracking-wider mb-1 flex-wrap">
-            <Sparkles className="h-4 w-4 text-emerald-600" />
-            <span className="font-bold">{collegeProfile.collegeName}</span>
+          <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 flex-wrap text-slate-800">
+            <span>✦ {collegeProfile.collegeName}</span>
             <span className="text-slate-400">•</span>
             <span>{activeSession.title}</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px]">
+            <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">
               {activeSession.date}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             3D Digital Twin Exam Hall Visualizer
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -44,12 +43,12 @@ export default function DigitalTwinPage() {
         </div>
 
         {/* View Controls */}
-        <div className="flex items-center gap-2 bg-[#F3EFE6] p-1 rounded-xl border border-[#E2DCCE]">
+        <div className="flex items-center gap-2 bg-white p-1 rounded-full border border-slate-200 shadow-2xs">
           <button
             onClick={() => setViewMode("isometric")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
               viewMode === "isometric"
-                ? "bg-white text-emerald-900 shadow-sm"
+                ? "bg-[#D4F754] text-black font-extrabold shadow-xs"
                 : "text-slate-600"
             }`}
           >
@@ -57,9 +56,9 @@ export default function DigitalTwinPage() {
           </button>
           <button
             onClick={() => setViewMode("topdown")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
               viewMode === "topdown"
-                ? "bg-white text-emerald-900 shadow-sm"
+                ? "bg-[#D4F754] text-black font-extrabold shadow-xs"
                 : "text-slate-600"
             }`}
           >
@@ -67,13 +66,13 @@ export default function DigitalTwinPage() {
           </button>
           <button
             onClick={() => setViewMode("podium")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
               viewMode === "podium"
-                ? "bg-white text-emerald-900 shadow-sm"
+                ? "bg-[#D4F754] text-black font-extrabold shadow-xs"
                 : "text-slate-600"
             }`}
           >
-            Podium POV 👁️
+            Proctor Podium
           </button>
         </div>
       </div>

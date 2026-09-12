@@ -82,19 +82,18 @@ export default function InvigilatorRosterPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FBF9F4]">
+    <div className="space-y-6">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-semibold uppercase tracking-wider mb-1 flex-wrap">
-          <Sparkles className="h-4 w-4 text-emerald-600" />
-          <span className="font-bold">{collegeProfile.collegeName}</span>
+        <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 flex-wrap text-slate-800">
+          <span>✦ {collegeProfile.collegeName}</span>
           <span className="text-slate-400">•</span>
           <span>{activeSession.title}</span>
-          <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px]">
+          <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">
             {activeSession.date}
           </span>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
           Invigilator Roster & Incident Logger
         </h1>
         <p className="text-xs text-slate-500 mt-1">
@@ -103,12 +102,12 @@ export default function InvigilatorRosterPage() {
       </div>
 
       {/* Mode Tabs */}
-      <div className="flex items-center gap-2 bg-[#F3EFE6] p-1 rounded-xl border border-[#E2DCCE] w-fit">
+      <div className="flex items-center gap-2 bg-white p-1 rounded-full border border-slate-200 shadow-2xs w-fit">
         <button
           onClick={() => setActiveTab("roster")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition ${
+          className={`px-4 py-1.5 rounded-full text-xs font-bold transition ${
             activeTab === "roster"
-              ? "bg-white text-emerald-900 shadow-sm border border-emerald-100"
+              ? "bg-[#D4F754] text-black font-extrabold shadow-xs"
               : "text-slate-600 hover:text-slate-900"
           }`}
         >
@@ -116,15 +115,14 @@ export default function InvigilatorRosterPage() {
         </button>
         <button
           onClick={() => setActiveTab("incidents")}
-          className={`px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+          className={`px-4 py-1.5 rounded-full text-xs font-bold transition flex items-center gap-1.5 ${
             activeTab === "incidents"
-              ? "bg-white text-emerald-900 shadow-sm border border-emerald-100"
+              ? "bg-[#D4F754] text-black font-extrabold shadow-xs"
               : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <ShieldAlert className="h-3.5 w-3.5 text-amber-600" />
-          <span>Incident & Booklet Log</span>
-          <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 font-semibold">
+          <span>🚨 Live Incident & Extra Sheet Log</span>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#161618] text-white font-mono font-bold">
             {incidents.length}
           </span>
         </button>

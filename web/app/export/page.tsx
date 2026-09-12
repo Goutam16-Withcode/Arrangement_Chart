@@ -71,11 +71,11 @@ export default function ExportPage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print bg-white p-4 rounded-2xl border border-[#E8E2D4]">
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 font-semibold">Select Room:</span>
+                <span className="text-xs text-slate-500 font-bold">Select Room:</span>
                 <select
                   value={selectedRoom}
                   onChange={(e) => setSelectedRoom(e.target.value)}
-                  className="px-3 py-1.5 rounded-xl bg-[#FAF8F3] border border-[#E0D9CB] text-xs text-slate-900 focus:outline-none font-semibold"
+                  className="px-3.5 py-2 rounded-xl bg-slate-100 border border-slate-300 text-xs text-slate-900 focus:outline-none font-bold"
                 >
                   {roomSeatings.map((rs) => (
                     <option key={rs.roomConfig.roomNumber} value={rs.roomConfig.roomNumber}>
@@ -85,13 +85,13 @@ export default function ExportPage() {
                 </select>
               </div>
 
-              <div className="flex items-center gap-1.5 bg-[#F3EFE6] p-1 rounded-xl border border-[#E2DCCE]">
+              <div className="flex items-center gap-1.5 bg-slate-200/60 p-1 rounded-xl border border-slate-300/60">
                 <button
                   onClick={() => setSectionGrouping("position")}
                   className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
                     sectionGrouping === "position"
-                      ? "bg-white text-emerald-900 shadow-2xs"
-                      : "text-slate-600"
+                      ? "bg-[#161618] text-white shadow-2xs"
+                      : "text-slate-600 hover:text-black"
                   }`}
                 >
                   By Column (F-1 / S-1 / T-1)
@@ -100,8 +100,8 @@ export default function ExportPage() {
                   onClick={() => setSectionGrouping("branch")}
                   className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
                     sectionGrouping === "branch"
-                      ? "bg-white text-emerald-900 shadow-2xs"
-                      : "text-slate-600"
+                      ? "bg-[#161618] text-white shadow-2xs"
+                      : "text-slate-600 hover:text-black"
                   }`}
                 >
                   By Branch / Course Section
@@ -111,22 +111,22 @@ export default function ExportPage() {
 
             <button
               onClick={handlePrint}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition"
+              className="px-4 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-black flex items-center gap-2 shadow-md transition"
             >
-              <Printer className="h-4 w-4" />
+              <Printer className="h-4 w-4 text-[#D4F754]" />
               <span>Print Official Attendance Book</span>
             </button>
           </div>
 
           {/* Printable Section-Wise Attendance Document */}
           {currentRoom && (
-            <div className="p-8 bg-white text-slate-900 rounded-2xl border border-[#E8E2D4] shadow-sm space-y-6 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
+            <div className="p-8 bg-white text-slate-900 rounded-[28px] border border-slate-200 shadow-xs space-y-6 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
               {/* Header */}
               <div className="border-b-2 border-slate-900 pb-3 text-center space-y-1">
-                <div className="text-sm font-extrabold uppercase tracking-wide text-slate-900">
+                <div className="text-sm font-black uppercase tracking-wide text-slate-900">
                   {collegeProfile.collegeName.toUpperCase()}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                <div className="text-xs font-black uppercase tracking-wider text-slate-700 bg-[#D4F754]/30 inline-block px-2 py-0.5 rounded">
                   {activeSession.title.toUpperCase()} • {collegeProfile.academicYear.toUpperCase()}
                 </div>
                 <div className="text-xs font-semibold text-slate-700">
@@ -281,25 +281,25 @@ export default function ExportPage() {
 
             <button
               onClick={handlePrint}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition"
+              className="px-4 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-black flex items-center gap-2 shadow-md transition"
             >
-              <Printer className="h-4 w-4" />
+              <Printer className="h-4 w-4 text-[#D4F754]" />
               <span>Print A4 Door Chart</span>
             </button>
           </div>
 
           {/* Printable Door Notice Document */}
           {currentRoom && (
-            <div className="p-8 bg-white text-slate-900 rounded-2xl border border-[#E8E2D4] shadow-sm space-y-6 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
+            <div className="p-8 bg-white text-slate-900 rounded-[28px] border border-slate-200 shadow-xs space-y-6 max-w-4xl mx-auto font-sans print:p-0 print:border-none print:shadow-none">
               {/* Header */}
               <div className="border-b-2 border-slate-900 pb-4 text-center space-y-1">
-                <div className="text-sm font-extrabold uppercase tracking-wide text-slate-900">
+                <div className="text-sm font-black uppercase tracking-wide text-slate-900">
                   {collegeProfile.collegeName.toUpperCase()}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                <div className="text-xs font-black uppercase tracking-wider text-slate-700 bg-[#D4F754]/30 inline-block px-2 py-0.5 rounded">
                   {activeSession.title.toUpperCase()}
                 </div>
-                <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
+                <h1 className="text-2xl font-black tracking-tight text-slate-900">
                   EXAMINATION HALL SEATING ARRANGEMENT NOTICE
                 </h1>
                 <div className="text-sm font-semibold text-slate-700">
@@ -317,10 +317,10 @@ export default function ExportPage() {
                   {currentRoom.attendanceList.map((item) => (
                     <div
                       key={item.serialNo}
-                      className="p-2 border border-slate-300 rounded bg-[#FAF8F3] font-mono"
+                      className="p-2.5 border border-slate-200 rounded-xl bg-slate-50 font-mono"
                     >
-                      <div className="font-bold text-slate-900">{item.student.rollNo}</div>
-                      <div className="text-[10px] text-slate-600 font-sans">
+                      <div className="font-extrabold text-slate-900">{item.student.rollNo}</div>
+                      <div className="text-[10px] text-slate-600 font-sans font-medium">
                         Pos: {item.position} • {item.student.branch}
                       </div>
                     </div>
@@ -329,7 +329,7 @@ export default function ExportPage() {
               </div>
 
               {/* Footer Notice */}
-              <div className="border-t border-slate-300 pt-4 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+              <div className="border-t border-slate-200 pt-4 flex items-center justify-between text-[11px] text-slate-500 font-mono font-semibold">
                 <span>Total Candidates: {currentRoom.assignedCount}</span>
                 <span>Reporting Time: 15 mins prior • Bags & Mobiles Prohibited</span>
               </div>
@@ -345,41 +345,41 @@ export default function ExportPage() {
       content: (
         <div className="space-y-6">
           <div className="flex items-center justify-between no-print">
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 font-medium">
               Printable adhesive desk slips with individual verification QR codes.
             </p>
             <button
               onClick={handlePrint}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition"
+              className="px-4 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-black flex items-center gap-2 shadow-md transition"
             >
-              <Printer className="h-4 w-4" />
+              <Printer className="h-4 w-4 text-[#D4F754]" />
               <span>Print Stickers (A4 Label Sheet)</span>
             </button>
           </div>
 
           {currentRoom && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-6 bg-white text-slate-900 rounded-2xl border border-[#E8E2D4] max-w-4xl mx-auto print:p-0 print:border-none">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-6 bg-white text-slate-900 rounded-[28px] border border-slate-200 max-w-4xl mx-auto print:p-0 print:border-none">
               {currentRoom.attendanceList.slice(0, 12).map((item) => (
                 <div
                   key={item.serialNo}
-                  className="p-3 border-2 border-dashed border-[#D1C9B8] rounded-xl flex items-center justify-between bg-[#FAF8F3]"
+                  className="p-3.5 border-2 border-dashed border-slate-300 rounded-2xl flex items-center justify-between bg-slate-50"
                 >
                   <div className="space-y-0.5">
-                    <div className="text-[10px] font-bold text-emerald-800 font-mono">
+                    <div className="text-[10px] font-black text-slate-900 font-mono bg-[#D4F754] px-1.5 py-0.5 rounded inline-block">
                       ROOM {currentRoom.roomConfig.roomNumber} • POS: {item.position}
                     </div>
-                    <div className="text-sm font-extrabold font-mono text-slate-900">
+                    <div className="text-sm font-black font-mono text-slate-900">
                       {item.student.rollNo}
                     </div>
-                    <div className="text-[11px] text-slate-700 truncate max-w-[120px]">
+                    <div className="text-[11px] text-slate-700 truncate max-w-[120px] font-medium">
                       {item.student.name}
                     </div>
-                    <div className="text-[9px] text-slate-500">
+                    <div className="text-[9px] text-slate-500 font-mono">
                       {item.student.branch} • {item.student.subjectCode}
                     </div>
                   </div>
 
-                  <div className="p-1 border border-[#E0D9CB] rounded bg-white shadow-2xs">
+                  <div className="p-1.5 border border-slate-200 rounded-xl bg-white shadow-2xs">
                     <QRCodeSVG
                       value={`VERIFY:${item.student.rollNo}:${currentRoom.roomConfig.roomNumber}`}
                       size={48}
@@ -397,23 +397,23 @@ export default function ExportPage() {
       value: "excel-export",
       icon: <Download className="h-4 w-4" />,
       content: (
-        <div className="bg-white border border-[#E8E2D4] p-8 rounded-3xl shadow-sm text-center space-y-4 max-w-2xl mx-auto">
-          <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 w-16 h-16 mx-auto flex items-center justify-center shadow-2xs">
+        <div className="bg-white border border-slate-200 p-8 rounded-[32px] shadow-xs text-center space-y-4 max-w-2xl mx-auto">
+          <div className="p-4 rounded-2xl bg-[#161618] text-[#D4F754] w-16 h-16 mx-auto flex items-center justify-center shadow-xs">
             <FileSpreadsheet className="h-8 w-8" />
           </div>
 
-          <h3 className="text-xl font-bold text-slate-900">
+          <h3 className="text-xl font-black text-slate-900 tracking-tight">
             Download Official {activeSession.examMode} Excel Workbook
           </h3>
-          <p className="text-xs text-slate-500 max-w-md mx-auto">
+          <p className="text-xs text-slate-500 max-w-md mx-auto font-medium">
             Exports a formatted institutional workbook with {collegeProfile.collegeName} headers, room seating plans, and section-wise attendance sheets for <strong>{activeSession.title}</strong>.
           </p>
 
           <button
             onClick={handleExportExcel}
-            className="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-emerald-600/20 flex items-center gap-2 mx-auto"
+            className="px-6 py-3.5 rounded-full bg-[#161618] hover:bg-black text-white font-black text-xs tracking-wider uppercase transition shadow-md flex items-center gap-2 mx-auto ring-2 ring-[#D4F754]/30"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-4 w-4 text-[#D4F754]" />
             <span>Download {activeSession.examMode}_Seating_{activeSession.date}.xlsx</span>
           </button>
         </div>
@@ -422,20 +422,19 @@ export default function ExportPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 bg-[#FBF9F4]">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-semibold uppercase tracking-wider mb-1 flex-wrap">
-            <Sparkles className="h-4 w-4 text-emerald-600" />
-            <span className="font-bold">{collegeProfile.collegeName}</span>
+          <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 flex-wrap text-slate-800">
+            <span>✦ {collegeProfile.collegeName}</span>
             <span className="text-slate-400">•</span>
             <span>{activeSession.title}</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px]">
+            <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">
               {activeSession.date}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             Export & Print Station
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -445,7 +444,7 @@ export default function ExportPage() {
 
         <button
           onClick={() => setIsConfigModalOpen(true)}
-          className="px-4 py-2 rounded-xl bg-[#FAF8F3] hover:bg-[#F3EFE6] text-slate-700 border border-[#E0D9CB] text-xs font-semibold flex items-center gap-1.5 transition shadow-2xs self-start md:self-auto"
+          className="px-4 py-2 rounded-full bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1.5 transition shadow-2xs self-start md:self-auto"
         >
           <span>⚙️ Edit College & Session Header</span>
         </button>

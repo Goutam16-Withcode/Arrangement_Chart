@@ -1,21 +1,22 @@
 "use client";
 import React, { useState } from "react";
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { useSeating } from "@/lib/context/SeatingContext";
 import {
-  Building,
-  Layers,
-  Sparkles,
-  PieChart,
-  UserCheck,
+  Zap,
+  ShieldCheck,
+  Percent,
+  Activity,
+  Moon,
+  ChevronDown,
+  MoreVertical,
   ArrowUpRight,
-  Settings,
+  Sparkles,
+  Layers,
   GraduationCap,
-  Calendar,
   Clock,
   BookOpen,
   CheckCircle2,
+  Calendar,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -25,328 +26,423 @@ export default function DashboardPage() {
     invigilators,
     roomSeatings,
     collegeProfile,
-    updateCollegeProfile,
     activeSession,
-    examMode,
-    setExamMode,
-    sessions,
-    switchSession,
     setIsConfigModalOpen,
   } = useSeating();
 
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [nameInput, setNameInput] = useState(collegeProfile.collegeName);
-  const [codeInput, setCodeInput] = useState(collegeProfile.collegeCode);
-  const [academicYearInput, setAcademicYearInput] = useState(collegeProfile.academicYear);
-  const [semesterInput, setSemesterInput] = useState(collegeProfile.semester);
+  const [filterPeriod, setFilterPeriod] = useState("Today");
 
-  const handleSaveProfile = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateCollegeProfile({
-      collegeName: nameInput,
-      collegeCode: codeInput,
-      academicYear: academicYearInput,
-      semester: semesterInput,
-    });
-    setIsEditingProfile(false);
-  };
-
-  const invigilatorItems = invigilators.map((inv) => ({
-    id: inv.id,
-    name: inv.name,
-    designation: `${inv.department} • Room ${inv.assignedRoom || "Standby"}`,
-    image: inv.image,
-    status: inv.status,
-  }));
+  // Dot matrix data for Hall Utilization card
+  const dotMatrixRows = [
+    [true, true, true, true, false, true, true],
+    [true, true, true, false, true, true, true],
+    [true, false, true, true, true, true, false],
+    [true, true, true, true, true, false, true],
+    [false, true, true, true, true, true, true],
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FBF9F4]">
-      {/* College Profile & Session Header Banner */}
-      <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-5">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-emerald-700 text-xs font-mono font-semibold uppercase tracking-wider mb-1">
-              <GraduationCap className="h-4 w-4 text-emerald-600" />
-              <span>{collegeProfile.collegeName} • Code: {collegeProfile.collegeCode}</span>
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {activeSession.title}
-            </h1>
-            <div className="flex items-center gap-3 text-xs text-slate-500 mt-1 flex-wrap font-mono">
-              <span className="flex items-center gap-1 font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                <Calendar className="h-3.5 w-3.5 text-emerald-600" />
-                <span>{activeSession.date}</span>
-              </span>
-              <span className="flex items-center gap-1 text-slate-700">
-                <Clock className="h-3.5 w-3.5 text-slate-500" />
-                <span>{activeSession.timing}</span>
-              </span>
-              <span>•</span>
-              <span>{collegeProfile.semester} ({collegeProfile.academicYear})</span>
-            </div>
-          </div>
-
-          {/* Quick Action Navigation */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <button
-              onClick={() => setIsConfigModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl bg-[#FAF8F3] hover:bg-[#F3EFE6] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5 shadow-2xs"
-            >
-              <Settings className="h-3.5 w-3.5 text-emerald-700" />
-              <span>Configure College & Exam</span>
-            </button>
-
-            <Link
-              href="/scanner"
-              className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs transition flex items-center gap-1.5 shadow-2xs"
-            >
-              <span>📷 QR Scanner</span>
-            </Link>
-
-            <Link
-              href="/studio"
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
-            >
-              <span>Open Seating Studio</span>
-              <ArrowUpRight className="h-4 w-4" />
-            </Link>
-          </div>
+    <div className="space-y-6">
+      {/* Title Bar (matching Health Overview in screenshot) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            Examination Overview
+          </h1>
+          <p className="text-xs text-slate-500 mt-1 font-medium">
+            Take control of your exam seating & hall allocations today!
+          </p>
         </div>
 
-        {/* Profile Settings Drawer (Expandable) */}
-        {isEditingProfile && (
-          <form
-            onSubmit={handleSaveProfile}
-            className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#E8E2D4] space-y-4 animate-in fade-in"
-          >
-            <h4 className="text-xs font-bold text-slate-900 uppercase font-mono tracking-wider">
-              Update Institutional Preset & Examination Information
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  College / University Name
-                </label>
-                <input
-                  type="text"
-                  value={nameInput}
-                  onChange={(e) => setNameInput(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Institute Code
-                </label>
-                <input
-                  type="text"
-                  value={codeInput}
-                  onChange={(e) => setCodeInput(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Academic Session
-                </label>
-                <input
-                  type="text"
-                  value={academicYearInput}
-                  onChange={(e) => setAcademicYearInput(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                  Semester Term
-                </label>
-                <input
-                  type="text"
-                  value={semesterInput}
-                  onChange={(e) => setSemesterInput(e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-lg bg-white border border-[#DDD7C8] text-xs font-semibold text-slate-900 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setIsEditingProfile(false)}
-                className="px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:text-slate-900 font-semibold"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs"
-              >
-                Save College Profile
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Active Session Course Strip */}
-        <div className="flex items-center gap-3 overflow-x-auto pt-2 border-t border-[#EAE4D6]">
-          <span className="text-[11px] font-bold text-slate-600 uppercase font-mono flex-shrink-0">
-            Active Papers:
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <span className="text-xs text-slate-400 font-mono">
+            {activeSession.date}
           </span>
-          {activeSession.courses.map((c) => (
-            <div
-              key={c.code}
-              className="flex-shrink-0 px-3 py-1 rounded-lg bg-[#FAF8F3] border border-[#E0D9CB] text-xs flex items-center gap-1.5"
-            >
-              <span className="font-mono font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded text-[10px]">
-                {c.code}
-              </span>
-              <span className="font-bold text-slate-800">{c.name}</span>
-              <span className="text-[10px] text-slate-500">
-                ({c.branch} - Yr {c.year})
-              </span>
-            </div>
-          ))}
+          <button
+            onClick={() => setIsConfigModalOpen(true)}
+            className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 text-xs font-bold text-slate-800 shadow-2xs hover:bg-slate-50 transition"
+          >
+            Today ⌵
+          </button>
         </div>
       </div>
 
-      {/* Bento Grid Architecture */}
-      <BentoGrid>
-        {/* Item 1: Capacity & Integrity (Span 2) */}
-        <BentoGridItem
-          className="md:col-span-2"
-          title="Overall Exam Hall Capacity & Allocation"
-          description={`Live allocation rate for ${activeSession.title} with multi-branch anti-cheating separation.`}
-          icon={<Building className="h-5 w-5 text-emerald-600" />}
-          header={
-            <div className="h-full w-full min-h-[7rem] rounded-xl bg-[#FAF8F2] border border-[#EAE4D6] p-5 flex flex-col justify-between">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-3 bg-white rounded-xl border border-[#E8E2D4] shadow-2xs">
-                  <div className="text-2xl font-bold font-mono text-slate-900">
-                    {metrics.seatedStudents}
-                  </div>
-                  <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5 font-semibold">
-                    Candidates Seated
-                  </div>
-                </div>
+      {/* Main Bento Grid Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Card 1: Energy Used -> Capacity & Seating Distribution (Left 5 Cols) */}
+        <div className="lg:col-span-5 bento-card p-6 flex flex-col justify-between space-y-6">
+          {/* Card Top Title & Menu */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+              <Zap className="h-4 w-4 text-slate-900 fill-slate-900" />
+              <span>Seating Capacity Allocation</span>
+            </div>
+            <button className="text-slate-400 hover:text-slate-800">
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </div>
 
-                <div className="p-3 bg-white rounded-xl border border-[#E8E2D4] shadow-2xs">
-                  <div className="text-2xl font-bold font-mono text-emerald-600">
-                    {metrics.totalCapacity}
-                  </div>
-                  <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5 font-semibold">
-                    Hall Capacity
-                  </div>
-                </div>
+          {/* Large Metric */}
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-4xl font-black text-slate-900 font-mono tracking-tight">
+                {metrics.seatedStudents || "4,3k"}
+              </span>
+              <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[11px] font-bold">
+                +5%
+              </span>
+            </div>
+            <span className="text-xs text-slate-400 font-medium mt-0.5 block">
+              candidates seated today
+            </span>
+          </div>
 
-                <div className="p-3 bg-white rounded-xl border border-[#E8E2D4] shadow-2xs">
-                  <div className="text-2xl font-bold font-mono text-teal-600">
-                    {metrics.conflictFreeRate}%
-                  </div>
-                  <div className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5 font-semibold">
-                    Integrity Score
-                  </div>
+          {/* Venn / Overlapping Circles Visualization (as in screenshot) */}
+          <div className="relative h-44 w-full flex items-center justify-center my-2">
+            {/* Lilac Circle (CSE) */}
+            <div className="absolute left-6 md:left-12 h-28 w-28 rounded-full bg-[#B8B5FF] flex flex-col items-center justify-center text-slate-900 font-bold shadow-sm z-10">
+              <span className="text-lg font-black leading-none">2,6k</span>
+              <span className="text-[10px] text-slate-800 font-medium">CSE</span>
+            </div>
+
+            {/* Dark Charcoal Circle (ME) */}
+            <div className="absolute right-6 md:right-12 h-28 w-28 rounded-full bg-[#1E1E22] flex flex-col items-center justify-center text-white font-bold shadow-md z-10">
+              <span className="text-lg font-black leading-none">1,2k</span>
+              <span className="text-[10px] text-slate-300 font-medium">ME</span>
+            </div>
+
+            {/* Neon Lime Small Overlap Circle (ECE) */}
+            <div className="absolute bottom-1 h-20 w-20 rounded-full bg-[#D4F754] flex flex-col items-center justify-center text-black font-bold shadow-md z-20 border-2 border-white">
+              <span className="text-sm font-black leading-none">500</span>
+              <span className="text-[9px] text-black/80 font-bold">ECE</span>
+            </div>
+          </div>
+
+          {/* Progress Percent Breakdown Bars (as in screenshot) */}
+          <div className="space-y-3 pt-2">
+            {/* CSE */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-black text-slate-900">45%</span>
+                <div className="w-32 sm:w-44 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-[#B8B5FF] rounded-full w-[45%]" />
                 </div>
               </div>
+              <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
+                Computer Science <span className="h-1.5 w-1.5 rounded-full bg-[#B8B5FF]" />
+              </span>
+            </div>
 
-              {/* Progress bar */}
-              <div className="mt-4 space-y-1.5">
-                <div className="flex justify-between text-xs font-mono text-slate-600 font-semibold">
-                  <span>Occupancy Progress</span>
-                  <span className="text-emerald-700">{metrics.utilizationRate}%</span>
+            {/* ME */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-black text-slate-900">30%</span>
+                <div className="w-32 sm:w-44 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-[#1E1E22] rounded-full w-[30%]" />
                 </div>
-                <div className="h-2 w-full bg-[#E5DFD1] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-500"
-                    style={{ width: `${metrics.utilizationRate}%` }}
+              </div>
+              <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
+                Mechanical Engg <span className="h-1.5 w-1.5 rounded-full bg-[#1E1E22]" />
+              </span>
+            </div>
+
+            {/* ECE */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-black text-slate-900">25%</span>
+                <div className="w-32 sm:w-44 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-[#D4F754] rounded-full w-[25%]" />
+                </div>
+              </div>
+              <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
+                Electronics <span className="h-1.5 w-1.5 rounded-full bg-[#D4F754]" />
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right 7 Cols: 4 Sub-Cards Grid */}
+        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {/* Card 2: Heart Rate -> Zero Conflict Index */}
+          <div className="bento-card p-5 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <ShieldCheck className="h-4 w-4 text-slate-900" />
+                <span>Zero Conflict Score</span>
+              </div>
+              <button className="text-slate-400 hover:text-slate-800">
+                <MoreVertical className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="my-4">
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-black text-slate-900 font-mono">
+                  {metrics.conflictFreeRate}%
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  0 Conflicts
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-[#D4F754]" />
+                <span>Optimal Multi-Branch Separation</span>
+              </div>
+            </div>
+
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
+              <span>Avg 100% Target</span>
+              <span>Constraint Engine Active</span>
+            </div>
+          </div>
+
+          {/* Card 3: Wellness Index -> Hall Utilization + Dot Matrix Grid */}
+          <div className="bento-card p-5 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <Percent className="h-4 w-4 text-slate-900" />
+                <span>Hall Utilization</span>
+              </div>
+              <button className="text-slate-400 hover:text-slate-800">
+                <MoreVertical className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="my-2 flex items-center justify-between">
+              <div>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-3xl font-black text-slate-900 font-mono">
+                    {metrics.utilizationRate || 94}%
+                  </span>
+                  <span className="px-1.5 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">
+                    +10%
+                  </span>
+                </div>
+                <span className="text-[11px] text-slate-400">Desk Efficiency</span>
+              </div>
+
+              {/* Dot Matrix Grid visualization */}
+              <div className="grid grid-rows-5 gap-1">
+                {dotMatrixRows.map((row, rIdx) => (
+                  <div key={rIdx} className="flex gap-1">
+                    {row.map((active, cIdx) => (
+                      <span
+                        key={cIdx}
+                        className={`h-2 w-2 rounded-full ${
+                          active
+                            ? (rIdx + cIdx) % 3 === 0
+                              ? "bg-[#D4F754]"
+                              : "bg-[#B8B5FF]"
+                            : "bg-slate-200"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
+              <span>Optimal Seat Density</span>
+              <span>No Overcrowding</span>
+            </div>
+          </div>
+
+          {/* Card 4: Activity -> Active Examination Halls */}
+          <div className="bento-card p-5 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <Activity className="h-4 w-4 text-slate-900" />
+                <span>Active Exam Halls</span>
+              </div>
+              <button className="text-slate-400 hover:text-slate-800">
+                <MoreVertical className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="my-3">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-slate-900 font-mono">
+                  {metrics.totalRooms || 3}
+                </span>
+                <span className="text-xs text-slate-500 font-bold">Halls Live</span>
+              </div>
+              <div className="text-[11px] text-slate-500 mt-1">
+                75 Seats / Hall Average
+              </div>
+            </div>
+
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
+              <span>Rooms: 302, 304, 101</span>
+              <Link href="/studio" className="text-black font-bold hover:underline">
+                View Halls →
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 5: Proctors Assigned */}
+          <div className="bento-card p-5 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <GraduationCap className="h-4 w-4 text-slate-900" />
+                <span>Invigilators on Duty</span>
+              </div>
+              <button className="text-slate-400 hover:text-slate-800">
+                <MoreVertical className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="my-3 flex items-center gap-3">
+              <div className="flex -space-x-2 overflow-hidden">
+                {invigilators.slice(0, 3).map((inv) => (
+                  <img
+                    key={inv.id}
+                    src={inv.image}
+                    alt={inv.name}
+                    className="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover"
                   />
-                </div>
+                ))}
+              </div>
+              <div>
+                <span className="text-sm font-black text-slate-900 block">
+                  {invigilators.length} Assigned
+                </span>
+                <span className="text-[10px] text-slate-400">Anti-Bias Rotation</span>
               </div>
             </div>
-          }
-        />
 
-        {/* Item 2: Invigilators On Duty */}
-        <BentoGridItem
-          className="md:col-span-1"
-          title="Invigilators & Proctors"
-          description="Assigned faculty coordinators per exam hall with active standby rotation."
-          icon={<UserCheck className="h-5 w-5 text-emerald-600" />}
-          header={
-            <div className="h-full w-full min-h-[7rem] rounded-xl bg-[#FAF8F2] border border-[#EAE4D6] p-5 flex flex-col justify-between">
-              <div className="text-xs text-slate-600 font-medium">Faculty Proctors on Duty:</div>
-              <div className="py-2">
-                <AnimatedTooltip items={invigilatorItems} />
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
+              <span>Chief: {collegeProfile.chiefSuperintendent}</span>
+            </div>
+          </div>
+
+          {/* Card 6: Sleep Analysis -> Allocation Efficiency & Striped Timeline (Full width dark card) */}
+          <div className="sm:col-span-2 bento-card-dark p-6 flex flex-col justify-between space-y-5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-bold text-white">
+                <Moon className="h-4 w-4 text-[#D4F754]" />
+                <span>Hall Allocation Efficiency & Timelines</span>
               </div>
-              <div className="text-[11px] text-emerald-800 font-mono font-semibold">
-                ● 3 Assigned • 1 Standby Faculty
+
+              <div className="px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold flex items-center gap-1 border border-white/10">
+                <span>Session Timeline ⌵</span>
               </div>
             </div>
-          }
-        />
 
-        {/* Item 3: Interleaved Course Cohorts */}
-        <BentoGridItem
-          className="md:col-span-1"
-          title="Scheduled Disciplines"
-          description="Candidates partitioned by department to eliminate adjacent subject matching."
-          icon={<PieChart className="h-5 w-5 text-teal-600" />}
-          header={
-            <div className="h-full w-full min-h-[7rem] rounded-xl bg-[#FAF8F2] border border-[#EAE4D6] p-4 space-y-2">
-              {Object.entries(metrics.branchesCount).map(([branch, count]) => (
-                <div
-                  key={branch}
-                  className="flex items-center justify-between text-xs p-2 rounded-lg bg-white border border-[#E8E2D4]"
-                >
-                  <span className="font-bold text-slate-800">{branch}</span>
-                  <span className="font-mono text-emerald-700 font-bold">{count} candidates</span>
-                </div>
-              ))}
-            </div>
-          }
-        />
-
-        {/* Item 4: Active Hall Roster */}
-        <BentoGridItem
-          className="md:col-span-2"
-          title="Active Room Roster"
-          description="Summary of all active exam halls and individual student capacities."
-          icon={<Layers className="h-5 w-5 text-lime-700" />}
-          header={
-            <div className="h-full w-full min-h-[7rem] rounded-xl bg-[#FAF8F2] border border-[#EAE4D6] p-4 overflow-y-auto max-h-48 no-visible-scrollbar space-y-2">
-              {roomSeatings.map((rs) => (
-                <div
-                  key={rs.roomConfig.roomNumber}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-[#E8E2D4] text-xs shadow-2xs"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
-                      Room {rs.roomConfig.roomNumber}
-                    </span>
-                    <span className="text-slate-600">
-                      {rs.roomConfig.building} (Floor {rs.roomConfig.floor})
-                    </span>
+            {/* Metrics Row */}
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2.5">
+                <div className="w-2.5 h-7 rounded-full bg-[#D4F754]" />
+                <div>
+                  <div className="text-2xl font-black text-white font-mono leading-none">
+                    98%
                   </div>
-
-                  <div className="flex items-center gap-3">
-                    <span className="text-slate-700 font-mono font-semibold">
-                      {rs.assignedCount} / {rs.totalCapacity} Seats
-                    </span>
-                    <Link
-                      href="/studio"
-                      className="text-[11px] text-emerald-700 font-bold hover:text-emerald-900 underline"
-                    >
-                      View Map →
-                    </Link>
+                  <div className="text-[10px] text-slate-400 font-medium mt-0.5">
+                    Seating Efficiency
                   </div>
                 </div>
-              ))}
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <div className="w-2.5 h-7 rounded-full bg-[#B8B5FF]" />
+                <div>
+                  <div className="text-2xl font-black text-white font-mono leading-none">
+                    3h 00m
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-medium mt-0.5">
+                    Exam Duration
+                  </div>
+                </div>
+              </div>
             </div>
-          }
-        />
-      </BentoGrid>
+
+            {/* Striped Bar Chart (matching Sleep Analysis bar chart in screenshot) */}
+            <div className="pt-2">
+              <div className="flex items-end justify-between gap-3 h-28 px-2">
+                {/* Room 101 */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[45%] rounded-xl" />
+                  <span className="text-[10px] text-slate-400 font-mono">Rm 101</span>
+                </div>
+
+                {/* Room 202 */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[60%] rounded-xl" />
+                  <span className="text-[10px] text-slate-400 font-mono">Rm 202</span>
+                </div>
+
+                {/* Room 302 */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[55%] rounded-xl" />
+                  <span className="text-[10px] text-slate-400 font-mono">Rm 302</span>
+                </div>
+
+                {/* Room 304 (Active Highlighted Neon Lime & Lilac) */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full flex gap-1 h-full items-end">
+                    <div className="w-1/2 bg-[#D4F754] h-[95%] rounded-xl shadow-lg shadow-[#D4F754]/20" />
+                    <div className="w-1/2 bg-[#B8B5FF] h-[75%] rounded-xl" />
+                  </div>
+                  <span className="text-[10px] text-[#D4F754] font-bold font-mono flex items-center">
+                    Hall 304 ↗
+                  </span>
+                </div>
+
+                {/* Room 401 */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[65%] rounded-xl" />
+                  <span className="text-[10px] text-slate-400 font-mono">Rm 401</span>
+                </div>
+
+                {/* Room 402 */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[40%] rounded-xl" />
+                  <span className="text-[10px] text-slate-400 font-mono">Rm 402</span>
+                </div>
+
+                {/* Hall 501 */}
+                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[50%] rounded-xl" />
+                  <span className="text-[10px] text-slate-400 font-mono">Hall 501</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Launch Action Ribbon */}
+      <div className="bento-card p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-2xl bg-[#D4F754] text-black flex items-center justify-center font-bold shadow-xs">
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <div>
+            <h3 className="font-extrabold text-sm text-slate-900">
+              Launch Visual 2D Seating Studio
+            </h3>
+            <p className="text-xs text-slate-500">
+              Drag-and-drop seat swapping, anti-cheating check, and live QR code rosters.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/scanner"
+            className="px-4 py-2 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold transition shadow-2xs"
+          >
+            📷 QR Scanner
+          </Link>
+          <Link
+            href="/studio"
+            className="px-5 py-2 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-bold transition shadow-sm flex items-center gap-1.5"
+          >
+            <span>Open Studio</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

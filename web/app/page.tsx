@@ -1,11 +1,6 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Spotlight } from "@/components/ui/spotlight";
-import { SparklesCore } from "@/components/ui/sparkles";
-import { Button as MovingBorderButton } from "@/components/ui/moving-border";
-import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { DropZone } from "@/components/upload/DropZone";
 import {
   Grid3X3,
   Layers,
@@ -19,11 +14,14 @@ import {
   QrCode,
   UserCheck,
   Box,
+  CheckCircle2,
+  Calendar,
 } from "lucide-react";
 import { useSeating } from "@/lib/context/SeatingContext";
+import { DropZone } from "@/components/upload/DropZone";
 
 export default function HomePage() {
-  const { metrics, activeSession, collegeProfile } = useSeating();
+  const { metrics, activeSession, collegeProfile, setIsConfigModalOpen } = useSeating();
 
   const featureCards = [
     {
@@ -31,182 +29,200 @@ export default function HomePage() {
       description:
         "Visualize classroom benches in real time. Drag, swap, and inspect student seat assignments with zero-delay updates.",
       link: "/studio",
-      icon: <Grid3X3 className="h-6 w-6 text-emerald-600" />,
+      icon: <Grid3X3 className="h-6 w-6 text-slate-900" />,
       badge: "Core Studio",
+      accent: "bg-[#D4F754]",
     },
     {
       title: "Live QR & Photo Attendance Scanner",
       description:
         "Scan desk QR codes with mobile/webcam to verify student university photos and record timestamps instantly.",
       link: "/scanner",
-      icon: <QrCode className="h-6 w-6 text-emerald-600" />,
+      icon: <QrCode className="h-6 w-6 text-slate-900" />,
       badge: "Biometric ID",
+      accent: "bg-[#B8B5FF]",
     },
     {
       title: "2D Visual Room Blueprint Builder",
       description:
         "Design lecture halls, auditoriums, and computer labs with customizable bench sizes (1-4 seats), doors, and podiums.",
       link: "/builder",
-      icon: <Layers className="h-6 w-6 text-emerald-600" />,
+      icon: <Layers className="h-6 w-6 text-slate-900" />,
       badge: "Drag & Drop",
+      accent: "bg-[#D4F754]",
     },
     {
       title: "Student Kiosk & Indoor Wayfinding",
       description:
         "Instant roll number search portal with 3D pin classroom locators, digital admit pass, and turn-by-turn indoor routing.",
       link: "/find-seat",
-      icon: <Search className="h-6 w-6 text-emerald-600" />,
+      icon: <Search className="h-6 w-6 text-slate-900" />,
       badge: "Self Service",
+      accent: "bg-[#B8B5FF]",
     },
     {
       title: "Print Station & Section-Wise Exporter",
       description:
         "1-click batch export for section-wise signature books (F-1/S-1/T-1), A4 door notice charts, and multi-sheet Excel files.",
       link: "/export",
-      icon: <Printer className="h-6 w-6 text-emerald-600" />,
+      icon: <Printer className="h-6 w-6 text-slate-900" />,
       badge: "Export",
+      accent: "bg-[#D4F754]",
     },
     {
       title: "Faculty Proctor Roster & Incident Log",
       description:
         "Anti-bias invigilator assignment, shift rotations, and live logging of extra answer sheets or malpractice notes.",
       link: "/invigilators",
-      icon: <UserCheck className="h-6 w-6 text-emerald-600" />,
+      icon: <UserCheck className="h-6 w-6 text-slate-900" />,
       badge: "Integrity",
+      accent: "bg-[#B8B5FF]",
     },
   ];
 
   return (
-    <div className="relative overflow-hidden min-h-screen bg-[#FBF9F4]">
-      {/* Background Spotlight with Light Green Mint glow */}
-      <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20"
-        fill="#34d399"
-      />
+    <div className="space-y-8">
+      {/* Hero Bento Header Banner */}
+      <section className="bento-card p-8 sm:p-12 relative overflow-hidden bg-gradient-to-br from-white via-white to-[#F2F3F5]">
+        <div className="max-w-3xl space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4F754] text-black text-xs font-black tracking-wide">
+            <span>✦</span>
+            <span>Intelligent Examination Seating Suite</span>
+          </div>
 
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10 text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-8 animate-pulse-glow shadow-xs">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          <span>⚡ Universal Exam Seating & Attendance Automation Suite</span>
-        </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight">
+            Exam Seating without Conflicts. Automated in Seconds.
+          </h1>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight">
-          Exam Seating without{" "}
-          <span className="text-gradient">Conflicts</span>. Automated in{" "}
-          <span className="text-gradient-cyan">Seconds</span>.
-        </h1>
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl font-medium">
+            Designed for real-world Mid-Semester Tests (MST) and End-Semester university exams.
+            Features multi-branch interleaving, live QR attendance scanners, and section-wise publishing.
+          </p>
 
-        <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
-          Designed for real-world Mid-Semester Tests (MST) and End-Semester university exams.
-          Features multi-branch interleaving, live QR attendance scanners, and section-wise publishing.
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <Link href="/studio">
-            <MovingBorderButton
-              borderRadius="1.25rem"
-              className="bg-emerald-600 text-white border-emerald-500 px-6 py-3 font-bold text-sm flex items-center gap-2 hover:bg-emerald-700 shadow-md shadow-emerald-600/25 transition"
+          <div className="pt-4 flex items-center gap-3 flex-wrap">
+            <Link
+              href="/studio"
+              className="px-6 py-3 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-extrabold tracking-wide transition shadow-md flex items-center gap-2"
             >
               <span>Launch Seating Studio</span>
-              <ArrowRight className="h-4 w-4 text-emerald-100" />
-            </MovingBorderButton>
-          </Link>
+              <ArrowRight className="h-4 w-4 text-[#D4F754]" />
+            </Link>
 
-          <Link
-            href="/dashboard"
-            className="px-6 py-3 rounded-2xl bg-white hover:bg-emerald-50/50 text-slate-800 border border-[#E0D9CB] text-sm font-semibold transition flex items-center gap-2 shadow-xs"
-          >
-            <Sliders className="h-4 w-4 text-emerald-700" />
-            <span>Open Dashboard</span>
-          </Link>
-        </div>
+            <Link
+              href="/dashboard"
+              className="px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-slate-900 border border-slate-200 text-xs font-bold transition shadow-2xs"
+            >
+              Open Dashboard
+            </Link>
 
-        {/* Sparkles Particle Divider */}
-        <div className="w-full h-20 relative mt-12">
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-emerald-400 to-transparent h-[2px] w-3/4 blur-xs" />
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-emerald-500 to-transparent h-px w-3/4" />
-
-          <SparklesCore
-            background="transparent"
-            minSize={0.4}
-            maxSize={1.8}
-            particleDensity={60}
-            className="w-full h-full"
-            particleColor="#059669"
-          />
-
-          <div className="absolute inset-0 w-full h-full bg-[#FBF9F4] [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
-        </div>
-      </section>
-
-      {/* Live Metrics Showcase */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
-            <div className="text-3xl font-extrabold text-slate-900 font-mono">
-              {metrics.totalRooms}
-            </div>
-            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Exam Halls Ready
-            </div>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
-            <div className="text-3xl font-extrabold text-emerald-600 font-mono">
-              {metrics.seatedStudents}
-            </div>
-            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Candidates Seated
-            </div>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
-            <div className="text-3xl font-extrabold text-teal-600 font-mono">
-              {metrics.conflictFreeRate}%
-            </div>
-            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Zero Conflict Score
-            </div>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-white border border-[#E8E2D4] shadow-xs text-center">
-            <div className="text-3xl font-extrabold text-lime-700 font-mono">
-              {metrics.utilizationRate}%
-            </div>
-            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">
-              Hall Utilization
-            </div>
+            <button
+              onClick={() => setIsConfigModalOpen(true)}
+              className="px-4 py-3 rounded-full bg-[#F2F3F5] hover:bg-slate-200 text-slate-700 text-xs font-bold transition"
+            >
+              ⚙️ Configure College & Exam
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Quick Excel Ingestion Dropzone */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Upload Layout & Roll Lists
-          </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Drop your institutional spreadsheets to instantly calculate optimal seat plans.
-          </p>
+      {/* Quick Metrics Bar */}
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bento-card p-5 text-center">
+          <div className="text-3xl font-black text-slate-900 font-mono">
+            {metrics.totalRooms}
+          </div>
+          <div className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">
+            Exam Halls Ready
+          </div>
+        </div>
+
+        <div className="bento-card p-5 text-center">
+          <div className="text-3xl font-black text-slate-900 font-mono">
+            {metrics.seatedStudents}
+          </div>
+          <div className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">
+            Candidates Seated
+          </div>
+        </div>
+
+        <div className="bento-card p-5 text-center">
+          <div className="text-3xl font-black text-slate-900 font-mono flex items-center justify-center gap-1">
+            <span>{metrics.conflictFreeRate}%</span>
+            <span className="h-2 w-2 rounded-full bg-[#D4F754]" />
+          </div>
+          <div className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">
+            Zero Conflict Score
+          </div>
+        </div>
+
+        <div className="bento-card p-5 text-center">
+          <div className="text-3xl font-black text-slate-900 font-mono">
+            {metrics.utilizationRate}%
+          </div>
+          <div className="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">
+            Hall Utilization
+          </div>
+        </div>
+      </section>
+
+      {/* Excel Drag & Drop Upload Bento Card */}
+      <section className="bento-card p-6 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+          <div>
+            <h2 className="text-lg font-black text-slate-900">
+              Upload Institutional Layouts & Roll Lists
+            </h2>
+            <p className="text-xs text-slate-500">
+              Drop your custom Excel spreadsheets to instantly re-calculate optimal seating plans.
+            </p>
+          </div>
         </div>
         <DropZone />
       </section>
 
-      {/* Feature Navigation Grid (CardHoverEffect) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Comprehensive Examination Modules
+      {/* Feature Grid Bento Cards */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-black text-slate-900">
+            Examination Modules
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Everything you need for seamless MST and End-Sem management in one unified platform.
-          </p>
+          <span className="text-xs text-slate-400 font-mono">
+            6 Specialized Workspaces
+          </span>
         </div>
 
-        <HoverEffect items={featureCards} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featureCards.map((card, idx) => (
+            <Link
+              key={idx}
+              href={card.link}
+              className="bento-card p-5 flex flex-col justify-between space-y-4 group hover:border-slate-300"
+            >
+              <div className="flex items-center justify-between">
+                <div className="h-10 w-10 rounded-2xl bg-slate-100 group-hover:bg-[#D4F754] transition flex items-center justify-center">
+                  {card.icon}
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-bold font-mono">
+                  {card.badge}
+                </span>
+              </div>
+
+              <div>
+                <h3 className="font-extrabold text-sm text-slate-900 group-hover:text-black">
+                  {card.title}
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 line-clamp-2">
+                  {card.description}
+                </p>
+              </div>
+
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-900 group-hover:underline">
+                <span>Launch Workspace</span>
+                <span>→</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   );

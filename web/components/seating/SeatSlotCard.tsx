@@ -16,19 +16,19 @@ export const SeatSlotCard: React.FC<SeatSlotCardProps> = ({
 }) => {
   const { student, positionLabel, hasConflict, conflictReason } = seat;
 
-  // Branch color styles in light green / soft pastel tones
+  // Branch color styles in Bento Neo-Modern palette
   const getBranchBadgeStyle = (branch?: string) => {
     switch (branch) {
       case "CSE":
-        return "bg-emerald-100 text-emerald-800 border-emerald-300";
+        return "bg-[#B8B5FF] text-slate-900 border-[#A5A1F8]";
       case "ME":
-        return "bg-teal-100 text-teal-800 border-teal-300";
+        return "bg-[#1E1E22] text-white border-black";
       case "ECE":
-        return "bg-lime-100 text-lime-800 border-lime-300";
+        return "bg-[#D4F754] text-black border-[#C2E938]";
       case "IT":
-        return "bg-cyan-100 text-cyan-800 border-cyan-300";
+        return "bg-[#B8B5FF] text-slate-900 border-[#A5A1F8]";
       default:
-        return "bg-green-100 text-green-800 border-green-300";
+        return "bg-[#D4F754] text-black border-[#C2E938]";
     }
   };
 
@@ -37,12 +37,12 @@ export const SeatSlotCard: React.FC<SeatSlotCardProps> = ({
       onClick={() => onSelect && onSelect(seat)}
       className={`group relative p-2.5 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between ${
         isSelected
-          ? "border-emerald-500 ring-2 ring-emerald-400 bg-emerald-50 scale-105 z-20 shadow-md"
+          ? "border-black ring-2 ring-black bg-slate-100 scale-105 z-20 shadow-md"
           : hasConflict
           ? "border-red-400 bg-red-50 hover:border-red-500"
           : student
-          ? "border-[#E4DED1] bg-white hover:border-emerald-400 hover:shadow-sm"
-          : "border-dashed border-[#DDD7C8] bg-[#F9F7F1] opacity-60 hover:opacity-100"
+          ? "border-slate-200 bg-white hover:border-slate-400 hover:shadow-xs"
+          : "border-dashed border-slate-200 bg-slate-50/60 opacity-60 hover:opacity-100"
       }`}
     >
       {/* Top row: Position Tag & Branch Pill */}

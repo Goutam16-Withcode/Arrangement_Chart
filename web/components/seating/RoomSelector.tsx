@@ -21,25 +21,25 @@ export const RoomSelector = () => {
             onClick={() => setSelectedRoomNumber(rs.roomConfig.roomNumber)}
             className={`flex-shrink-0 px-4 py-2.5 rounded-2xl border text-left transition-all duration-200 flex items-center gap-3 ${
               isSelected
-                ? "bg-emerald-50 border-emerald-500 text-emerald-950 shadow-sm"
-                : "bg-white border-[#E8E2D4] text-slate-700 hover:border-emerald-300 hover:bg-[#FDFBF7]"
+                ? "bg-[#161618] border-[#161618] text-white shadow-md ring-2 ring-[#D4F754]/30"
+                : "bg-white border-[#E5E7EB] text-slate-700 hover:border-black hover:bg-slate-50"
             }`}
           >
             <div
-              className={`p-2 rounded-xl ${
+              className={`p-2 rounded-xl transition-all ${
                 isSelected
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "bg-[#F3EFE6] text-slate-600"
+                  ? "bg-[#D4F754] text-black shadow-xs font-bold"
+                  : "bg-slate-100 text-slate-600"
               }`}
             >
               <DoorOpen className="h-4 w-4" />
             </div>
 
             <div>
-              <div className="text-xs font-bold font-mono text-slate-900">
+              <div className={`text-xs font-black tracking-tight ${isSelected ? "text-white" : "text-slate-900"}`}>
                 Room {rs.roomConfig.roomNumber}
               </div>
-              <div className="text-[10px] text-slate-500">
+              <div className={`text-[10px] font-mono ${isSelected ? "text-[#D4F754]" : "text-slate-500"}`}>
                 {rs.assignedCount}/{rs.totalCapacity} ({occupancyRate}%)
               </div>
             </div>
@@ -49,9 +49,9 @@ export const RoomSelector = () => {
 
       <Link
         href="/builder"
-        className="flex-shrink-0 px-3.5 py-2.5 rounded-2xl border border-dashed border-[#DDD7C8] hover:border-emerald-500 bg-white hover:bg-emerald-50/50 text-slate-600 hover:text-emerald-800 text-xs font-semibold flex items-center gap-1.5 transition"
+        className="flex-shrink-0 px-3.5 py-2.5 rounded-2xl border border-dashed border-slate-300 hover:border-black bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition shadow-2xs"
       >
-        <Plus className="h-4 w-4 text-emerald-600" />
+        <Plus className="h-4 w-4 text-black" />
         <span>New Room</span>
       </Link>
     </div>

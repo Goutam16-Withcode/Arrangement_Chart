@@ -38,7 +38,7 @@ export const Tabs = ({
     <>
       <div
         className={cn(
-          "flex flex-row items-center justify-start relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full gap-2 p-1.5 bg-[#F4F0E6] border border-[#E5DFD1] rounded-2xl",
+          "flex flex-row items-center justify-start relative overflow-auto sm:overflow-visible no-visible-scrollbar max-w-full w-full gap-2 p-1.5 bg-slate-200/60 border border-slate-300/60 rounded-2xl",
           containerClassName
         )}
       >
@@ -59,9 +59,9 @@ export const Tabs = ({
             {active.value === tab.value && (
               <motion.div
                 layoutId="clickedbutton"
-                transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
+                transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                 className={cn(
-                  "absolute inset-0 bg-emerald-600 rounded-xl shadow-md shadow-emerald-600/20",
+                  "absolute inset-0 bg-[#161618] rounded-xl shadow-md",
                   activeTabClassName
                 )}
               />
@@ -69,11 +69,15 @@ export const Tabs = ({
 
             <span
               className={cn(
-                "relative z-20 flex items-center gap-2 transition",
-                active.value === tab.value ? "text-white" : "text-slate-600 hover:text-emerald-800"
+                "relative z-20 flex items-center gap-2 transition font-bold",
+                active.value === tab.value ? "text-white" : "text-slate-600 hover:text-black"
               )}
             >
-              {tab.icon}
+              {tab.icon && (
+                <span className={active.value === tab.value ? "text-[#D4F754]" : ""}>
+                  {tab.icon}
+                </span>
+              )}
               {tab.title}
             </span>
           </button>
