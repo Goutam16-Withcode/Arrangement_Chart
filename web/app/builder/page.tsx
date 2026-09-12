@@ -5,7 +5,7 @@ import { RoomConfig } from "@/lib/types";
 import {
   Plus,
   Sliders,
-  Sparkles,
+  Building2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
@@ -59,7 +59,7 @@ export default function BuilderPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 flex-wrap text-slate-800">
-          <span>✦ {collegeProfile.collegeName}</span>
+          <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-slate-500" /> {collegeProfile.collegeName}</span>
           <span className="text-slate-400">•</span>
           <span>Room Geometry Designer</span>
         </div>

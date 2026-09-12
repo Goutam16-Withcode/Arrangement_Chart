@@ -9,7 +9,7 @@ import {
   Layers,
   Search,
   Printer,
-  Sparkles,
+  LayoutGrid,
   RotateCcw,
   QrCode,
   UserCheck,
@@ -58,15 +58,15 @@ export const Navbar = () => {
             onClick={() => setMobileOpen(false)}
             className="flex items-center gap-2.5 group flex-shrink-0"
           >
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-md shadow-emerald-600/20 group-hover:scale-105 transition duration-200">
-              <Sparkles className="h-4 w-4 text-white" />
+            <div className="h-9 w-9 rounded-xl bg-black text-[#D4F754] flex items-center justify-center shadow-md shadow-black/20 group-hover:scale-105 transition duration-200">
+              <LayoutGrid className="h-4 w-4 fill-[#D4F754] stroke-[#D4F754]" />
             </div>
             <div className="flex flex-col">
-              <div className="font-extrabold text-base tracking-tight flex items-center gap-1 leading-none text-slate-900">
-                <span>Smart</span>
-                <span className="text-gradient">Seating</span>
+              <div className="font-black text-base tracking-tight flex items-center gap-1.5 leading-none text-slate-900">
+                <span>DeskMatrix</span>
+                <span className="text-[10px] font-mono font-bold bg-[#D4F754] text-black px-1 rounded">PRO</span>
               </div>
-              <span className="text-[10px] text-emerald-700 font-mono font-semibold tracking-wider uppercase mt-0.5">
+              <span className="text-[10px] text-slate-500 font-mono font-bold tracking-wider uppercase mt-0.5">
                 {examMode === "MST" ? "MST Test Mode" : "End-Sem Mode"}
               </span>
             </div>

@@ -7,7 +7,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   User,
-  Sparkles,
+  Building2,
   Clock,
   ShieldCheck,
   RotateCcw,
@@ -136,7 +136,7 @@ export default function ScannerPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 flex-wrap text-slate-800">
-            <span>✦ {collegeProfile.collegeName}</span>
+            <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-slate-500" /> {collegeProfile.collegeName}</span>
             <span className="text-slate-400">•</span>
             <span>{activeSession.title}</span>
             <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">

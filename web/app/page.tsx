@@ -10,7 +10,8 @@ import {
   Zap,
   ArrowRight,
   Sliders,
-  Sparkles,
+  LayoutGrid,
+  Building2,
   QrCode,
   UserCheck,
   Box,
@@ -77,8 +78,8 @@ export default function HomePage() {
       <section className="bento-card p-8 sm:p-12 relative overflow-hidden bg-gradient-to-br from-white via-white to-[#F2F3F5]">
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4F754] text-black text-xs font-black tracking-wide">
-            <span>✦</span>
-            <span>Intelligent Examination Seating Suite</span>
+            <LayoutGrid className="h-3.5 w-3.5 fill-black stroke-black" />
+            <span>DeskMatrix Seating Architecture</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight">

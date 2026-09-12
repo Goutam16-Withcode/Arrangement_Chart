@@ -82,7 +82,7 @@ function FindSeatContent() {
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D4F754] text-black text-xs font-black">
-          <span>✦</span>
+          <Building2 className="h-3.5 w-3.5" />
           <span>{collegeProfile.collegeName} • {collegeProfile.collegeCode}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">

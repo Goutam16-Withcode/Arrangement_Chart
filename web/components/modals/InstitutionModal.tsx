@@ -7,7 +7,6 @@ import {
   Calendar,
   Clock,
   GraduationCap,
-  Sparkles,
   X,
   Check,
   RotateCcw,
@@ -271,8 +270,8 @@ export const InstitutionModal = () => {
                   : "border-transparent text-slate-500 hover:text-slate-800"
               }`}
             >
-              <Sparkles className="h-4 w-4 text-black" />
-              <span>1-Click Presets</span>
+              <Layers className="h-4 w-4 text-black" />
+              <span>Institutional Presets</span>
             </button>
           </div>
 

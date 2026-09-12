@@ -10,7 +10,8 @@ import {
   ChevronDown,
   MoreVertical,
   ArrowUpRight,
-  Sparkles,
+  LayoutGrid,
+  Building2,
   Layers,
   GraduationCap,
   Clock,
@@ -57,7 +58,7 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 text-slate-700">
-            <span>✦ {collegeProfile.collegeName}</span>
+            <span className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-slate-500" /> {collegeProfile.collegeName}</span>
             <span className="text-slate-400">•</span>
             <span className="bg-[#D4F754] text-black px-2 py-0.5 rounded font-black">{activeSession.title}</span>
           </div>
@@ -418,7 +419,7 @@ export default function DashboardPage() {
       <div className="bento-card p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-2xl bg-[#D4F754] text-black flex items-center justify-center font-bold shadow-xs">
-            <Sparkles className="h-5 w-5" />
+            <LayoutGrid className="h-5 w-5 fill-black stroke-black" />
           </div>
           <div>
             <h3 className="font-black text-sm text-slate-900 tracking-tight">

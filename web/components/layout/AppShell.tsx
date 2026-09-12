@@ -14,7 +14,8 @@ import {
   Search,
   Box,
   ChevronDown,
-  Sparkles,
+  LayoutGrid,
+  Building2,
   Sliders,
   RotateCcw,
   Zap,
@@ -160,13 +161,13 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
             href="/dashboard"
             className="flex items-center gap-3 px-2 py-1 group"
           >
-            <div className="h-9 w-9 rounded-2xl bg-[#D4F754] text-black flex items-center justify-center font-black text-xl shadow-md shadow-[#D4F754]/20 group-hover:scale-105 transition">
-              ✦
+            <div className="h-9 w-9 rounded-2xl bg-[#D4F754] text-black flex items-center justify-center font-black shadow-md shadow-[#D4F754]/20 group-hover:scale-105 transition">
+              <LayoutGrid className="h-5 w-5 fill-black stroke-black" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-lg tracking-tight text-white flex items-center gap-1">
-                <span>flux</span>
-                <span className="text-[#D4F754] text-xs font-mono font-bold">.exam</span>
+              <span className="font-black text-lg tracking-tight text-white flex items-center gap-1.5">
+                <span>DeskMatrix</span>
+                <span className="text-[#D4F754] text-[9px] font-mono font-black bg-[#232328] px-1.5 py-0.5 rounded border border-white/10">PRO</span>
               </span>
             </div>
           </Link>
@@ -209,16 +210,16 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
           </nav>
         </div>
 
-        {/* Bottom Promo / Exam Optimization Widget Card */}
+        {/* Bottom Exam Allocation Engine Widget Card */}
         <div className="mt-8 bg-[#D4F754] text-black p-4 rounded-3xl relative overflow-hidden shadow-lg space-y-3">
           <div className="flex items-center justify-between">
             <h4 className="font-black text-sm tracking-tight text-black">
-              Anti-Cheat AI Engine
+              Constraint Matrix Engine
             </h4>
-            <span className="text-base">⚡</span>
+            <span className="text-sm font-mono font-black bg-black text-[#D4F754] px-1.5 py-0.5 rounded">v2.4</span>
           </div>
           <p className="text-[11px] font-bold text-black/80 leading-snug">
-            Automates zero adjacent branch conflict seating & attendance rosters.
+            Zero-adjacent branch separation & multi-hall institutional balancing.
           </p>
           <button
             onClick={handleQuickOptimize}
@@ -232,10 +233,10 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
       {/* Mobile Top Header (Small Screens) */}
       <div className="lg:hidden bg-[#161618] p-4 flex items-center justify-between text-white border-b border-white/10 rounded-t-[36px]">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-xl bg-[#D4F754] text-black flex items-center justify-center font-black text-lg">
-            ✦
+          <div className="h-8 w-8 rounded-xl bg-[#D4F754] text-black flex items-center justify-center font-black">
+            <LayoutGrid className="h-4 w-4 fill-black stroke-black" />
           </div>
-          <span className="font-extrabold text-base tracking-tight">flux.exam</span>
+          <span className="font-black text-base tracking-tight">DeskMatrix</span>
         </Link>
 
         <div className="flex items-center gap-2">
@@ -299,8 +300,8 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               onClick={() => setIsConfigModalOpen(true)}
               className="flex items-center gap-3 cursor-pointer group p-1.5 rounded-2xl hover:bg-white transition"
             >
-              <div className="h-10 w-10 rounded-full bg-[#161618] text-[#D4F754] flex items-center justify-center font-black text-sm border-2 border-white shadow-xs overflow-hidden flex-shrink-0">
-                <span>✦</span>
+              <div className="h-10 w-10 rounded-2xl bg-[#161618] text-[#D4F754] flex items-center justify-center font-black text-sm border border-slate-200 shadow-xs overflow-hidden flex-shrink-0">
+                <Building2 className="h-5 w-5 text-[#D4F754]" />
               </div>
               <div className="flex flex-col text-left">
                 <div className="flex items-center gap-1.5">

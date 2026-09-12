@@ -4,9 +4,9 @@ import { AppShell } from "@/components/layout/AppShell";
 import { SeatingProvider } from "@/lib/context/SeatingContext";
 
 export const metadata: Metadata = {
-  title: "flux.exam | Intelligent Exam Arrangement & Seating Studio",
+  title: "DeskMatrix | Enterprise Exam Seating & Attendance System",
   description:
-    "Next-generation algorithmic exam seating chart generator, 2D visual classroom builder, and student kiosk pass system.",
+    "Institutional algorithmic exam seating chart generator, multi-branch conflict-free placement, and QR attendance verification system.",
 };
 
 export default function RootLayout({
