@@ -4,6 +4,7 @@ import { RoomConfig, Student, RoomSeating } from "./types";
 export class ExcelEngine {
   /**
    * Export seating charts and attendance sheets to a multi-sheet .xlsx workbook
+   * with Section-Wise grouped attendance records (F-1, S-1, T-1 / Branch sections).
    */
   public static exportSeatingWorkbook(roomSeatings: RoomSeating[]): void {
     const wb = XLSX.utils.book_new();
@@ -20,7 +21,7 @@ export class ExcelEngine {
       seatingData.push([`Building: ${room.building} | Floor: ${room.floor} | Total Capacity: ${rs.totalCapacity}`]);
       seatingData.push([]);
 
-      // Seat Position Headers (e.g. Bench 1, Bench 2, ...)
+      // Seat Position Headers (e.g. Col 1 (F-1), Col 1 (S-1), ...)
       const benchHeaders: string[] = [];
       for (let b = 0; b < room.benchesPerRow; b++) {
         for (let p = 0; p < room.studentsPerBench; p++) {
@@ -51,23 +52,75 @@ export class ExcelEngine {
       const wsSeating = XLSX.utils.aoa_to_sheet(seatingData);
       XLSX.utils.book_append_sheet(wb, wsSeating, roomTitle);
 
-      // 2. Build Attendance Sheet
-      const attendanceData: any[][] = [
-        [`ATTENDANCE SHEET - ROOM ${room.roomNumber}`],
-        [`Course Exam Session | Total Students Seated: ${rs.assignedCount}`],
-        [],
-        ["Serial No", "Seat Position", "Roll Number", "Student Name", "Branch", "Signature / Status"],
-      ];
+      // 2. Build Section-Wise Attendance Sheet
+      // Group attendance candidates by seat position (F-1, S-1, T-1)
+      const sectionPositions = ["F-1", "S-1", "T-1", "F-2"].slice(0, room.studentsPerBench);
 
-      rs.attendanceList.forEach((item) => {
-        attendanceData.push([
-          item.serialNo,
-          item.position,
-          item.student.rollNo,
-          item.student.name,
-          item.student.branch,
-          item.present ? "PRESENT" : "____________________",
-        ]);
+      const sectionGroups: { [pos: string]: typeof rs.attendanceList } = {};
+      sectionPositions.forEach((pos) => {
+        sectionGroups[pos] = rs.attendanceList.filter((item) => item.position === pos);
+      });
+
+      const maxRows = Math.max(
+        ...sectionPositions.map((pos) => sectionGroups[pos]?.length || 0),
+        1
+      );
+
+      const attendanceData: any[][] = [];
+      attendanceData.push([`SECTION-WISE ATTENDANCE RECORD - ROOM ${room.roomNumber}`]);
+      attendanceData.push([`Total Candidates: ${rs.assignedCount} | Session Time: 09:30 AM`]);
+      attendanceData.push([]);
+
+      // Section Header Banner Row
+      const secHeaderRow: string[] = [];
+      const colHeaderRow: string[] = [];
+
+      sectionPositions.forEach((pos) => {
+        const posLabel =
+          pos === "F-1"
+            ? `SECTION 1 (LEFT - ${pos})`
+            : pos === "S-1"
+            ? `SECTION 2 (MIDDLE - ${pos})`
+            : pos === "T-1"
+            ? `SECTION 3 (RIGHT - ${pos})`
+            : `SECTION (${pos})`;
+
+        secHeaderRow.push(posLabel, "", "", "", "");
+        colHeaderRow.push("S.No", "Roll Number", "Student Name", "Branch", "Signature / Status");
+      });
+
+      attendanceData.push(secHeaderRow);
+      attendanceData.push(colHeaderRow);
+
+      // Rows for side-by-side section tables
+      for (let i = 0; i < maxRows; i++) {
+        const row: string[] = [];
+
+        sectionPositions.forEach((pos) => {
+          const item = sectionGroups[pos]?.[i];
+          if (item) {
+            row.push(
+              String(i + 1),
+              item.student.rollNo,
+              item.student.name,
+              item.student.branch,
+              item.present ? "PRESENT" : "________________"
+            );
+          } else {
+            row.push("", "", "", "", "");
+          }
+        });
+
+        attendanceData.push(row);
+      }
+
+      // Add Branch Summary Block at the bottom
+      attendanceData.push([]);
+      attendanceData.push(["SECTION BREAKDOWN SUMMARY"]);
+      sectionPositions.forEach((pos) => {
+        const count = sectionGroups[pos]?.length || 0;
+        const branchSample = sectionGroups[pos]?.[0]?.student.branch || "General";
+        attendanceData.push([`Section ${pos} Total Candidates:`, count, `Primary Branch: ${branchSample}`]);
       });
 
       const wsAttendance = XLSX.utils.aoa_to_sheet(attendanceData);
@@ -75,7 +128,7 @@ export class ExcelEngine {
     });
 
     // Write file and trigger browser download
-    XLSX.writeFile(wb, "SeatingChart_Smart_Output.xlsx");
+    XLSX.writeFile(wb, "SeatingChart_SectionWise_Output.xlsx");
   }
 
   /**

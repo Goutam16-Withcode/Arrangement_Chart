@@ -10,6 +10,7 @@ import {
   Search,
   Sparkles,
   RefreshCw,
+  Layers,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -23,6 +24,7 @@ export default function StudioPage() {
   } = useSeating();
 
   const [activeTab, setActiveTab] = useState<"visual" | "attendance">("visual");
+  const [selectedSection, setSelectedSection] = useState<string>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
 
   const currentRoomSeating =
@@ -34,13 +36,23 @@ export default function StudioPage() {
     ExcelEngine.exportSeatingWorkbook(roomSeatings);
   };
 
+  const sectionOptions = ["ALL", "F-1", "S-1", "T-1"].slice(
+    0,
+    (currentRoomSeating?.roomConfig.studentsPerBench || 3) + 1
+  );
+
   const filteredAttendance =
-    currentRoomSeating?.attendanceList.filter(
-      (item) =>
+    currentRoomSeating?.attendanceList.filter((item) => {
+      const matchesSearch =
         item.student.rollNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.student.branch.toLowerCase().includes(searchQuery.toLowerCase())
-    ) || [];
+        item.student.branch.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesSection =
+        selectedSection === "ALL" || item.position === selectedSection;
+
+      return matchesSearch && matchesSection;
+    }) || [];
 
   const presentCount =
     currentRoomSeating?.attendanceList.filter((item) => item.present).length || 0;
@@ -77,7 +89,7 @@ export default function StudioPage() {
             className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition"
           >
             <FileSpreadsheet className="h-3.5 w-3.5" />
-            <span>Export Excel (.xlsx)</span>
+            <span>Export Section Excel</span>
           </button>
 
           <Link
@@ -146,24 +158,48 @@ export default function StudioPage() {
           />
         ) : (
           /* Attendance Sheet Mode */
-          <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg font-bold text-slate-900">
-                  Attendance Sheet - Room {currentRoomSeating.roomConfig.roomNumber}
+                  Section-Wise Attendance • Room {currentRoomSeating.roomConfig.roomNumber}
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Click any student row to mark attendance in real time.
+                  Click student row to toggle presence. Filter by seat column sections below.
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 text-xs font-mono">
-                <span className="px-3 py-1 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold">
-                  Present: {presentCount}
+              {/* Section Selector Pills */}
+              <div className="flex items-center gap-1.5 bg-[#FAF8F3] p-1 rounded-xl border border-[#E8E2D4]">
+                <span className="text-[11px] font-bold text-slate-500 px-2 font-mono">
+                  Section:
                 </span>
-                <span className="px-3 py-1 rounded-xl bg-[#F6F3EC] border border-[#E5E0D3] text-slate-600 font-semibold">
-                  Total: {currentRoomSeating.assignedCount}
-                </span>
+                {sectionOptions.map((pos) => {
+                  const label =
+                    pos === "ALL"
+                      ? "All Sections"
+                      : pos === "F-1"
+                      ? "Sec 1 (F-1)"
+                      : pos === "S-1"
+                      ? "Sec 2 (S-1)"
+                      : pos === "T-1"
+                      ? "Sec 3 (T-1)"
+                      : pos;
+
+                  return (
+                    <button
+                      key={pos}
+                      onClick={() => setSelectedSection(pos)}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition font-mono ${
+                        selectedSection === pos
+                          ? "bg-emerald-600 text-white shadow-2xs"
+                          : "text-slate-600 hover:text-emerald-800 hover:bg-white"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -181,7 +217,7 @@ export default function StudioPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#EFEBE0]">
-                  {filteredAttendance.map((item) => (
+                  {filteredAttendance.map((item, index) => (
                     <tr
                       key={item.serialNo}
                       onClick={() =>
@@ -196,7 +232,7 @@ export default function StudioPage() {
                           : "hover:bg-[#FAF8F3]"
                       }`}
                     >
-                      <td className="py-3 px-4 font-mono text-slate-500">{item.serialNo}</td>
+                      <td className="py-3 px-4 font-mono text-slate-500">{index + 1}</td>
                       <td className="py-3 px-4">
                         <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#F2EDE1] text-slate-700 border border-[#E2DCCE]">
                           {item.position}
