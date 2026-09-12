@@ -41,12 +41,30 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <Link
+            href="/scanner"
+            className="px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs transition flex items-center gap-1.5 shadow-2xs"
+          >
+            <span>📷 QR Scanner</span>
+          </Link>
+          <Link
+            href="/invigilators"
+            className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F6F2E8] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5"
+          >
+            <span>👨‍🏫 Proctor Roster</span>
+          </Link>
+          <Link
+            href="/3d-twin"
+            className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#F6F2E8] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5"
+          >
+            <span>📦 3D Twin</span>
+          </Link>
           <Link
             href="/studio"
             className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
           >
-            <span>Open Seating Studio</span>
+            <span>Open Studio</span>
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>

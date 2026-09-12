@@ -10,6 +10,9 @@ import {
   Printer,
   Sparkles,
   RotateCcw,
+  QrCode,
+  UserCheck,
+  Box,
 } from "lucide-react";
 import { useSeating } from "@/lib/context/SeatingContext";
 
@@ -19,14 +22,17 @@ export const Navbar = () => {
 
   const navLinks = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Seating Studio", href: "/studio", icon: Grid3X3 },
-    { name: "Room Builder", href: "/builder", icon: Layers },
+    { name: "Studio", href: "/studio", icon: Grid3X3 },
+    { name: "QR Scanner", href: "/scanner", icon: QrCode },
+    { name: "Proctor Roster", href: "/invigilators", icon: UserCheck },
+    { name: "3D Twin", href: "/3d-twin", icon: Box },
+    { name: "Builder", href: "/builder", icon: Layers },
     { name: "Student Kiosk", href: "/find-seat", icon: Search },
-    { name: "Export & Print", href: "/export", icon: Printer },
+    { name: "Export", href: "/export", icon: Printer },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-[#E8E2D4] shadow-sm">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-[#E8E2D4] shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
@@ -45,7 +51,7 @@ export const Navbar = () => {
         </Link>
 
         {/* Navigation links */}
-        <nav className="hidden md:flex items-center gap-1 bg-[#F5F2EA] p-1 rounded-xl border border-[#E5DFD1]">
+        <nav className="hidden lg:flex items-center gap-1 bg-[#F5F2EA] p-1 rounded-xl border border-[#E5DFD1]">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -53,38 +59,36 @@ export const Navbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition duration-200 ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition duration-200 ${
                   isActive
-                    ? "bg-white text-emerald-800 shadow-sm border border-emerald-100"
+                    ? "bg-white text-emerald-800 shadow-xs border border-emerald-100 font-bold"
                     : "text-slate-600 hover:text-emerald-800 hover:bg-white/60"
                 }`}
               >
                 <Icon className={`h-3.5 w-3.5 ${isActive ? "text-emerald-600" : "text-slate-500"}`} />
-                {link.name}
+                <span>{link.name}</span>
               </Link>
             );
           })}
         </nav>
 
         {/* Right side actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={resetToDefaults}
             title="Reset to Sample Demo Data"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-slate-600 hover:text-emerald-800 bg-[#F4EFE6] hover:bg-[#EBE5DA] border border-[#E0D9CB] transition"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Reset Demo</span>
+            <span className="hidden sm:inline">Reset</span>
           </button>
 
           <Link
-            href="/studio"
-            className="relative inline-flex h-9 overflow-hidden rounded-xl p-[1px] focus:outline-none"
+            href="/scanner"
+            className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
           >
-            <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#A7F3D0_0%,#059669_50%,#A7F3D0_100%)]" />
-            <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 px-3.5 py-1 text-xs font-bold text-white shadow-md shadow-emerald-600/20 transition">
-              Launch Studio ⚡
-            </span>
+            <QrCode className="h-3.5 w-3.5" />
+            <span>Scan QR</span>
           </Link>
         </div>
       </div>
