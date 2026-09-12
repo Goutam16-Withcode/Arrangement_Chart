@@ -13,10 +13,10 @@ export class ExcelEngine {
   ): void {
     const wb = XLSX.utils.book_new();
 
-    const collegeName = collegeProfile?.collegeName || "National Institute of Engineering & Technology";
-    const collegeCode = collegeProfile?.collegeCode || "NIET-1084";
-    const examTitle = activeSession?.title || "End-Semester Major Theory Exam";
-    const examDate = activeSession?.date || "28-Nov-2026";
+    const collegeName = collegeProfile?.collegeName || "University Examination Authority";
+    const collegeCode = collegeProfile?.collegeCode || "UNIV-101";
+    const examTitle = activeSession?.title || "Semester Examination Session";
+    const examDate = activeSession?.date || "Scheduled Examination Session";
     const examTiming = activeSession?.timing || "09:30 AM - 12:30 PM";
 
     roomSeatings.forEach((rs) => {
@@ -135,7 +135,7 @@ export class ExcelEngine {
         attendanceData.push([`Section ${pos} Total Candidates:`, count, `Primary Branch: ${branchSample}`]);
       });
       attendanceData.push([]);
-      attendanceData.push(["Chief Superintendent:", collegeProfile?.chiefSuperintendent || "Prof. S. K. Narayan"]);
+      attendanceData.push(["Chief Superintendent:", collegeProfile?.chiefSuperintendent || "Dr. Controller of Examinations"]);
       attendanceData.push(["Invigilator In-Charge:", "__________________________ (Signature)"]);
 
       const wsAttendance = XLSX.utils.aoa_to_sheet(attendanceData);

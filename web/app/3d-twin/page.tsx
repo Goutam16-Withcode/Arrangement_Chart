@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export default function DigitalTwinPage() {
-  const { roomSeatings, selectedRoomNumber } = useSeating();
+  const { roomSeatings, selectedRoomNumber, collegeProfile, activeSession } = useSeating();
   const [viewMode, setViewMode] = useState<"isometric" | "topdown" | "podium">("isometric");
   const [showVisibilityHeatmap, setShowVisibilityHeatmap] = useState(true);
 
@@ -26,9 +26,14 @@ export default function DigitalTwinPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-emerald-700 text-xs font-mono font-semibold uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-semibold uppercase tracking-wider mb-1 flex-wrap">
             <Sparkles className="h-4 w-4 text-emerald-600" />
-            <span>Spatial Exam Architecture</span>
+            <span className="font-bold">{collegeProfile.collegeName}</span>
+            <span className="text-slate-400">•</span>
+            <span>{activeSession.title}</span>
+            <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px]">
+              {activeSession.date}
+            </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             3D Digital Twin Exam Hall Visualizer

@@ -70,7 +70,7 @@ export default function FindSeatPage() {
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
           <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          <span>Student Self-Service Portal • {collegeProfile.collegeCode}</span>
+          <span>{collegeProfile.collegeName} • {collegeProfile.collegeCode}</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           Find Your Exam Seat & Digital Pass
@@ -142,13 +142,13 @@ export default function FindSeatPage() {
                 <div className="flex items-center justify-between border-b border-[#E8E2D4] pb-4">
                   <div>
                     <div className="text-[10px] font-mono text-emerald-700 uppercase tracking-widest font-bold">
-                      Digital Exam Pass
+                      {collegeProfile.collegeName} • Admit Pass
                     </div>
                     <h2 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5">
                       {allocation.student.name}
                     </h2>
                     <div className="text-xs font-mono text-slate-500">
-                      {allocation.student.rollNo}
+                      {allocation.student.rollNo} • {activeSession.title}
                     </div>
                   </div>
 
@@ -206,7 +206,7 @@ export default function FindSeatPage() {
                     <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                     <span>Verified Entry Ticket</span>
                   </div>
-                  <span className="font-mono text-[10px]">Session: 09:30 AM</span>
+                  <span className="font-mono text-[10px]">{activeSession.timing}</span>
                 </div>
               </BackgroundGradient>
             </div>

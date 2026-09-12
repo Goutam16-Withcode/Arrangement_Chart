@@ -31,6 +31,7 @@ export default function DashboardPage() {
     setExamMode,
     sessions,
     switchSession,
+    setIsConfigModalOpen,
   } = useSeating();
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
@@ -88,11 +89,11 @@ export default function DashboardPage() {
           {/* Quick Action Navigation */}
           <div className="flex items-center gap-2 flex-wrap">
             <button
-              onClick={() => setIsEditingProfile(!isEditingProfile)}
-              className="px-3.5 py-2 rounded-xl bg-[#FAF8F3] hover:bg-[#F3EFE6] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5"
+              onClick={() => setIsConfigModalOpen(true)}
+              className="px-3.5 py-2 rounded-xl bg-[#FAF8F3] hover:bg-[#F3EFE6] text-slate-700 border border-[#E0D9CB] font-semibold text-xs transition flex items-center gap-1.5 shadow-2xs"
             >
               <Settings className="h-3.5 w-3.5 text-emerald-700" />
-              <span>Edit College Settings</span>
+              <span>Configure College & Exam</span>
             </button>
 
             <Link

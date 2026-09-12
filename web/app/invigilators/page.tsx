@@ -25,7 +25,7 @@ interface IncidentLog {
 }
 
 export default function InvigilatorRosterPage() {
-  const { invigilators, rooms } = useSeating();
+  const { invigilators, rooms, collegeProfile, activeSession } = useSeating();
   const [activeTab, setActiveTab] = useState<"roster" | "incidents">("roster");
 
   // Sample incident log state
@@ -85,9 +85,14 @@ export default function InvigilatorRosterPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 bg-[#FBF9F4]">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-emerald-700 text-xs font-mono font-semibold uppercase tracking-wider mb-1">
+        <div className="flex items-center gap-2 text-emerald-800 text-xs font-mono font-semibold uppercase tracking-wider mb-1 flex-wrap">
           <Sparkles className="h-4 w-4 text-emerald-600" />
-          <span>Faculty Proctoring & Integrity Center</span>
+          <span className="font-bold">{collegeProfile.collegeName}</span>
+          <span className="text-slate-400">•</span>
+          <span>{activeSession.title}</span>
+          <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px]">
+            {activeSession.date}
+          </span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
           Invigilator Roster & Incident Logger

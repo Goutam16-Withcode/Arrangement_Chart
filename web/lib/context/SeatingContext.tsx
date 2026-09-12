@@ -27,6 +27,10 @@ interface SeatingContextType {
   activeSession: ExamSession;
   sessions: ExamSession[];
   switchSession: (sessionId: string) => void;
+  updateActiveSession: (update: Partial<ExamSession>) => void;
+  addCustomSession: (newSession: ExamSession) => void;
+  isConfigModalOpen: boolean;
+  setIsConfigModalOpen: (open: boolean) => void;
   rooms: RoomConfig[];
   students: Student[];
   invigilators: Invigilator[];
@@ -46,8 +50,11 @@ const SeatingContext = createContext<SeatingContextType | undefined>(undefined);
 
 export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [collegeProfile, setCollegeProfile] = useState<CollegeProfile>(DEFAULT_COLLEGE_PROFILE);
+  const [sessions, setSessions] = useState<ExamSession[]>(EXAM_SESSIONS);
   const [examMode, setExamModeState] = useState<ExamMode>("END_SEM");
   const [activeSession, setActiveSession] = useState<ExamSession>(EXAM_SESSIONS[2]); // Default End-Sem Slot 1
+  const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
+
   const [rooms, setRooms] = useState<RoomConfig[]>(SAMPLE_ROOMS);
   const [students, setStudents] = useState<Student[]>([]);
   const [invigilators] = useState<Invigilator[]>(SAMPLE_INVIGILATORS);
@@ -64,6 +71,18 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     branchesCount: {},
   });
 
+  // Hydrate from localStorage if available
+  useEffect(() => {
+    try {
+      const savedProfile = localStorage.getItem("smart_seating_college_profile");
+      if (savedProfile) {
+        setCollegeProfile(JSON.parse(savedProfile));
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
   // Load session students & calculate seating on mount
   useEffect(() => {
     const sessionStudents = generateStudentsForSession(activeSession);
@@ -74,7 +93,7 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   const switchSession = (sessionId: string) => {
-    const found = EXAM_SESSIONS.find((s) => s.id === sessionId);
+    const found = sessions.find((s) => s.id === sessionId);
     if (!found) return;
 
     setActiveSession(found);
@@ -90,12 +109,33 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const setExamMode = (mode: ExamMode) => {
     setExamModeState(mode);
-    const matchingSession = EXAM_SESSIONS.find((s) => s.examMode === mode) || EXAM_SESSIONS[0];
+    const matchingSession = sessions.find((s) => s.examMode === mode) || sessions[0];
     switchSession(matchingSession.id);
   };
 
   const updateCollegeProfile = (profileUpdate: Partial<CollegeProfile>) => {
-    setCollegeProfile((prev) => ({ ...prev, ...profileUpdate }));
+    setCollegeProfile((prev) => {
+      const updated = { ...prev, ...profileUpdate };
+      try {
+        localStorage.setItem("smart_seating_college_profile", JSON.stringify(updated));
+      } catch {
+        // ignore
+      }
+      return updated;
+    });
+  };
+
+  const updateActiveSession = (update: Partial<ExamSession>) => {
+    const updated = { ...activeSession, ...update };
+    setActiveSession(updated);
+    setSessions((prev) =>
+      prev.map((s) => (s.id === activeSession.id ? { ...s, ...update } : s))
+    );
+  };
+
+  const addCustomSession = (newSession: ExamSession) => {
+    setSessions((prev) => [...prev, newSession]);
+    switchSession(newSession.id);
   };
 
   const recalculateSeating = (customRooms?: RoomConfig[], customStudents?: Student[]) => {
@@ -151,7 +191,13 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const resetToDefaults = () => {
     setCollegeProfile(DEFAULT_COLLEGE_PROFILE);
+    setSessions(EXAM_SESSIONS);
     setRooms(SAMPLE_ROOMS);
+    try {
+      localStorage.removeItem("smart_seating_college_profile");
+    } catch {
+      // ignore
+    }
     switchSession("endsem-slot-1");
     setSelectedRoomNumber("302");
   };
@@ -164,8 +210,12 @@ export const SeatingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         examMode,
         setExamMode,
         activeSession,
-        sessions: EXAM_SESSIONS,
+        sessions,
         switchSession,
+        updateActiveSession,
+        addCustomSession,
+        isConfigModalOpen,
+        setIsConfigModalOpen,
         rooms,
         students,
         invigilators,
@@ -193,3 +243,4 @@ export const useSeating = () => {
   }
   return context;
 };
+

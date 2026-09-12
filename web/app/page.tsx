@@ -88,7 +88,7 @@ export default function HomePage() {
       <section className="relative pt-16 pb-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10 text-center">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-8 animate-pulse-glow shadow-xs">
           <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-          <span>{collegeProfile.collegeName} • {activeSession.title}</span>
+          <span>⚡ Universal Exam Seating & Attendance Automation Suite</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 max-w-4xl mx-auto leading-tight">

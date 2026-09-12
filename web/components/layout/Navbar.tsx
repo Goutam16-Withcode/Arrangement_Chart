@@ -18,6 +18,8 @@ import {
   X,
   ChevronDown,
   ArrowRight,
+  Building2,
+  Sliders,
 } from "lucide-react";
 import { useSeating } from "@/lib/context/SeatingContext";
 
@@ -32,6 +34,8 @@ export const Navbar = () => {
     examMode,
     setExamMode,
     activeSession,
+    collegeProfile,
+    setIsConfigModalOpen,
   } = useSeating();
 
   const mainNavLinks = [
@@ -164,7 +168,27 @@ export const Navbar = () => {
           </nav>
 
           {/* Right Action Controls */}
-          <div className="flex items-center gap-2.5 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Institution Badge & Customizer Trigger */}
+            <button
+              onClick={() => setIsConfigModalOpen(true)}
+              title="Configure Institution & Exam Session"
+              className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF8F3] hover:bg-[#F3EFE6] border border-[#E0D9CB] text-xs font-semibold text-slate-700 transition group shadow-2xs"
+            >
+              <Building2 className="h-3.5 w-3.5 text-emerald-600 group-hover:scale-110 transition" />
+              <div className="flex flex-col text-left">
+                <span className="max-w-[130px] truncate font-bold text-slate-800 leading-tight">
+                  {collegeProfile.collegeName}
+                </span>
+                <span className="text-[9px] text-emerald-800 font-mono">
+                  {activeSession.slot || activeSession.title}
+                </span>
+              </div>
+              <span className="text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-200">
+                {collegeProfile.collegeCode}
+              </span>
+            </button>
+
             {/* Mode Switcher Pill (MST vs End-Sem) */}
             <div className="hidden sm:flex items-center bg-[#F4EFE6] p-0.5 rounded-xl border border-[#E2DCCE]">
               <button
@@ -188,6 +212,15 @@ export const Navbar = () => {
                 End-Sem
               </button>
             </div>
+
+            {/* Quick Settings Icon Button */}
+            <button
+              onClick={() => setIsConfigModalOpen(true)}
+              title="Institution & Exam Session Settings"
+              className="p-2 rounded-xl text-slate-500 hover:text-emerald-800 hover:bg-[#FAF8F3] border border-transparent hover:border-[#E2DCCE] transition"
+            >
+              <Sliders className="h-4 w-4 text-emerald-700" />
+            </button>
 
             {/* Reset Button */}
             <button
@@ -227,6 +260,29 @@ export const Navbar = () => {
               exit={{ opacity: 0, y: -10 }}
               className="lg:hidden mt-2 bg-white/95 backdrop-blur-xl border border-[#E6E1D6] rounded-2xl p-4 shadow-xl space-y-3"
             >
+              {/* Mobile Institution Profile Trigger */}
+              <div
+                onClick={() => {
+                  setIsConfigModalOpen(true);
+                  setMobileOpen(false);
+                }}
+                className="p-3 rounded-xl bg-emerald-50/60 border border-emerald-200 cursor-pointer flex items-center justify-between"
+              >
+                <div>
+                  <div className="text-[10px] font-mono text-emerald-800 font-bold uppercase">
+                    Institution & Session Profile
+                  </div>
+                  <div className="font-bold text-xs text-slate-900 truncate">
+                    {collegeProfile.collegeName}
+                  </div>
+                  <div className="text-[10px] text-slate-500 font-mono">
+                    {activeSession.title}
+                  </div>
+                </div>
+                <span className="px-2 py-1 rounded-lg bg-white border border-emerald-300 text-[10px] font-bold text-emerald-800">
+                  Edit ⚙️
+                </span>
+              </div>
               {/* Mobile Mode Switcher */}
               <div className="flex items-center justify-between p-2 rounded-xl bg-[#FAF8F3] border border-[#E8E2D4]">
                 <span className="text-xs font-bold text-slate-700">Exam Mode:</span>

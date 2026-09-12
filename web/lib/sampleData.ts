@@ -1,20 +1,20 @@
-import { RoomConfig, Student, Invigilator, CollegeProfile, ExamSession, ExamMode } from "./types";
+import { RoomConfig, Student, Invigilator, CollegeProfile, ExamSession } from "./types";
 
 export const DEFAULT_COLLEGE_PROFILE: CollegeProfile = {
-  collegeName: "National Institute of Engineering & Technology",
-  collegeCode: "NIET-1084",
+  collegeName: "Apex University of Technology & Management",
+  collegeCode: "AUTM-2026",
   academicYear: "Academic Session 2025-2026",
-  semester: "Even Semester (IV, VI, VIII)",
-  examCenterCode: "CENTER-309",
-  chiefSuperintendent: "Prof. S. K. Narayan (Dean Academics)",
+  semester: "Semester Examination / Term Assessment",
+  examCenterCode: "EXAM-CTR-01",
+  chiefSuperintendent: "Dr. Controller of Examinations",
 };
 
 export const EXAM_SESSIONS: ExamSession[] = [
   {
     id: "mst-slot-1",
     examMode: "MST",
-    title: "Mid-Semester Test (MST-1) • Day 1 (Morning)",
-    date: "14-Oct-2026",
+    title: "Mid-Semester Assessment (MST) • Slot 1",
+    date: "Day 1 (Morning Session)",
     timing: "10:00 AM - 11:30 AM (1.5 Hours)",
     slot: "Slot 1 (Morning)",
     courses: [
@@ -26,8 +26,8 @@ export const EXAM_SESSIONS: ExamSession[] = [
   {
     id: "mst-slot-2",
     examMode: "MST",
-    title: "Mid-Semester Test (MST-1) • Day 1 (Afternoon)",
-    date: "14-Oct-2026",
+    title: "Mid-Semester Assessment (MST) • Slot 2",
+    date: "Day 1 (Afternoon Session)",
     timing: "02:30 PM - 04:00 PM (1.5 Hours)",
     slot: "Slot 2 (Afternoon)",
     courses: [
@@ -39,26 +39,26 @@ export const EXAM_SESSIONS: ExamSession[] = [
   {
     id: "endsem-slot-1",
     examMode: "END_SEM",
-    title: "End-Semester Major Theory Exam • Day 1 (Morning)",
-    date: "28-Nov-2026",
+    title: "End-Semester Major Theory Examination • Slot 1",
+    date: "Day 1 (Morning Session)",
     timing: "09:30 AM - 12:30 PM (3.0 Hours)",
     slot: "Slot 1 (Morning)",
     courses: [
       { branch: "CSE", year: 2, code: "CS401", name: "Design & Analysis of Algorithms" },
       { branch: "ME", year: 3, code: "ME602", name: "Kinematics & Dynamics of Machines" },
-      { branch: "ECE", year: 4, code: "EC803", name: "Wireless Sensor Networks & IoT" },
+      { branch: "ECE", year: 4, code: "EC803", name: "Wireless Networks & IoT" },
     ],
   },
   {
     id: "endsem-slot-2",
     examMode: "END_SEM",
-    title: "End-Semester Major Theory Exam • Day 1 (Afternoon)",
-    date: "28-Nov-2026",
+    title: "End-Semester Major Theory Examination • Slot 2",
+    date: "Day 1 (Afternoon Session)",
     timing: "02:00 PM - 05:00 PM (3.0 Hours)",
     slot: "Slot 2 (Afternoon)",
     courses: [
-      { branch: "CSE", year: 4, code: "CS801", name: "Cloud Computing & Distributed Systems" },
-      { branch: "ME", year: 4, code: "ME802", name: "Industrial Robotics & CIM" },
+      { branch: "CSE", year: 4, code: "CS801", name: "Distributed Systems & Cloud" },
+      { branch: "ME", year: 4, code: "ME802", name: "Industrial Automation & Robotics" },
       { branch: "ECE", year: 2, code: "EC402", name: "Analog Electronic Circuits" },
     ],
   },
@@ -72,10 +72,10 @@ export const SAMPLE_ROOMS: RoomConfig[] = [
     rows: 5,
     benchesPerRow: 4,
     studentsPerBench: 3,
-    leftBranchName: "B.Tech CSE",
-    middleBranchName: "B.Tech ME",
-    rightBranchName: "B.Tech ECE",
-    customName: "Computing Lecture Hall 302",
+    leftBranchName: "Branch 1",
+    middleBranchName: "Branch 2",
+    rightBranchName: "Branch 3",
+    customName: "Lecture Hall 302",
   },
   {
     roomNumber: "304",
@@ -84,21 +84,21 @@ export const SAMPLE_ROOMS: RoomConfig[] = [
     rows: 4,
     benchesPerRow: 3,
     studentsPerBench: 3,
-    leftBranchName: "B.Tech CSE",
-    middleBranchName: "B.Tech ME",
-    rightBranchName: "B.Tech ECE",
+    leftBranchName: "Branch 1",
+    middleBranchName: "Branch 2",
+    rightBranchName: "Branch 3",
     customName: "Seminar Room 304",
   },
   {
     roomNumber: "101",
-    building: "Engineering Complex B",
+    building: "Main Complex B",
     floor: 1,
     rows: 6,
     benchesPerRow: 4,
     studentsPerBench: 2,
-    leftBranchName: "B.Tech IT",
-    middleBranchName: "B.Tech Civil",
-    customName: "Drawing Hall 101",
+    leftBranchName: "Branch 1",
+    middleBranchName: "Branch 2",
+    customName: "Exam Hall 101",
   },
 ];
 
@@ -120,7 +120,7 @@ export const generateStudentsForSession = (session: ExamSession): Student[] => {
   let idCounter = 1;
 
   session.courses.forEach((course) => {
-    const count = 40; // 40 students per branch/course
+    const count = 40;
     for (let i = 1; i <= count; i++) {
       const fn = firstNames[(idCounter * 7) % firstNames.length];
       const ln = lastNames[(idCounter * 11) % lastNames.length];
