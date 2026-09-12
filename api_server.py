@@ -47,7 +47,7 @@ class RoomConfigRequest(BaseModel):
     building: str
     floor: int
     rows: int
-    benchesPerRow: number = 4
+    benchesPerRow: int = 4
     studentsPerBench: int = 3
     leftBranchName: Optional[str] = "CSE"
     middleBranchName: Optional[str] = "ME"
