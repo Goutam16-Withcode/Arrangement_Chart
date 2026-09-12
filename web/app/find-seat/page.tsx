@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSeating } from "@/lib/context/SeatingContext";
 import { Student, RoomConfig } from "@/lib/types";
 import { PinContainer } from "@/components/ui/3d-pin";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { QRCodeSVG } from "qrcode.react";
+import { useSearchParams } from "next/navigation";
 import {
   Search,
   Sparkles,
@@ -14,6 +15,7 @@ import {
   Footprints,
   Compass,
   ArrowRight,
+  Printer,
 } from "lucide-react";
 
 interface FoundAllocation {
@@ -24,10 +26,21 @@ interface FoundAllocation {
   rowIndex: number;
 }
 
-export default function FindSeatPage() {
+function FindSeatContent() {
   const { roomSeatings, collegeProfile, activeSession } = useSeating();
-  const [query, setQuery] = useState("CSE2026001");
-  const [searchedRoll, setSearchedRoll] = useState("CSE2026001");
+  const searchParams = useSearchParams();
+  const initialRoll = searchParams.get("roll") || "CSE2026001";
+
+  const [query, setQuery] = useState(initialRoll);
+  const [searchedRoll, setSearchedRoll] = useState(initialRoll);
+
+  useEffect(() => {
+    const rollFromUrl = searchParams.get("roll");
+    if (rollFromUrl) {
+      setQuery(rollFromUrl);
+      setSearchedRoll(rollFromUrl);
+    }
+  }, [searchParams]);
 
   // Search through all rooms to find matching seat
   let foundAllocation: FoundAllocation | null = null;
@@ -247,15 +260,23 @@ export default function FindSeatPage() {
           </div>
         </div>
       ) : (
-        <div className="max-w-md mx-auto p-8 rounded-3xl bg-white border border-[#E8E2D4] text-center space-y-3 shadow-sm">
+        <div className="max-w-md mx-auto p-8 rounded-3xl bg-white border border-slate-200 text-center space-y-3 shadow-xs">
           <AlertCircle className="h-8 w-8 text-amber-500 mx-auto" />
-          <h3 className="text-base font-bold text-slate-900">No Matching Record Found</h3>
-          <p className="text-xs text-slate-500">
+          <h3 className="text-base font-black text-slate-900">No Matching Record Found</h3>
+          <p className="text-xs text-slate-500 font-medium">
             Could not find student matching &quot;{searchedRoll}&quot;. Try searching with demo roll number{" "}
-            <code className="text-emerald-700 font-bold">CSE2026001</code> or <code className="text-emerald-700 font-bold">ME2026005</code>.
+            <code className="text-black bg-[#D4F754] px-1.5 py-0.5 rounded font-bold font-mono">CSE2026001</code> or <code className="text-black bg-[#B8B5FF] px-1.5 py-0.5 rounded font-bold font-mono">ME2026005</code>.
           </p>
         </div>
       )}
     </div>
+  );
+}
+
+export default function FindSeatPage() {
+  return (
+    <Suspense fallback={<div className="p-12 text-center text-xs text-slate-400 font-mono">Loading Candidate Kiosk...</div>}>
+      <FindSeatContent />
+    </Suspense>
   );
 }

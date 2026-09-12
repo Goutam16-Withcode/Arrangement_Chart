@@ -47,11 +47,6 @@ export const Navbar = () => {
     { name: "Export", href: "/export", icon: <Printer className="h-4 w-4" /> },
   ];
 
-  const extraLinks = [
-    { name: "Student Kiosk", href: "/find-seat", icon: <Search className="h-4 w-4" /> },
-    { name: "3D Hall Twin", href: "/3d-twin", icon: <Box className="h-4 w-4" /> },
-  ];
-
   return (
     <header className="sticky top-0 z-50 w-full pt-3 px-4 sm:px-6 lg:px-8 pointer-events-none">
       <div className="max-w-7xl mx-auto pointer-events-auto">
@@ -122,49 +117,6 @@ export const Navbar = () => {
                 </Link>
               );
             })}
-
-            {/* Extra Dropdown for Kiosk and 3D Twin */}
-            <div className="relative">
-              <button
-                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-                onBlur={() => setTimeout(() => setMoreDropdownOpen(false), 200)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1 transition ${
-                  pathname === "/find-seat" || pathname === "/3d-twin"
-                    ? "bg-white text-emerald-950 font-bold shadow-xs border border-emerald-300/80"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <span>More</span>
-                <ChevronDown className="h-3 w-3 text-slate-400" />
-              </button>
-
-              <AnimatePresence>
-                {moreDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 6 }}
-                    className="absolute right-0 top-full mt-2 w-44 bg-white border border-[#E6E1D6] rounded-2xl shadow-lg p-1.5 space-y-1 z-50"
-                  >
-                    {extraLinks.map((ex) => (
-                      <Link
-                        key={ex.href}
-                        href={ex.href}
-                        onClick={() => setMoreDropdownOpen(false)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold transition ${
-                          pathname === ex.href
-                            ? "bg-emerald-50 text-emerald-900 font-bold"
-                            : "text-slate-600 hover:bg-[#FAF8F3] hover:text-slate-900"
-                        }`}
-                      >
-                        <span className="text-emerald-600">{ex.icon}</span>
-                        <span>{ex.name}</span>
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
           </nav>
 
           {/* Right Action Controls */}
@@ -308,7 +260,7 @@ export const Navbar = () => {
 
               {/* Mobile Links */}
               <div className="grid grid-cols-2 gap-2">
-                {[...mainNavLinks, ...extraLinks].map((link) => {
+                {mainNavLinks.map((link) => {
                   const isActive = pathname === link.href;
                   return (
                     <Link

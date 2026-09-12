@@ -134,36 +134,36 @@ export default function InvigilatorRosterPage() {
           {invigilators.map((inv) => (
             <div
               key={inv.id}
-              className="bg-white border border-[#E8E2D4] p-5 rounded-2xl shadow-sm space-y-4 hover:border-emerald-300 transition"
+              className="bento-card p-5 space-y-4 hover:border-black transition"
             >
               <div className="flex items-center gap-3">
                 <img
                   src={inv.image}
                   alt={inv.name}
-                  className="h-12 w-12 rounded-xl object-cover border border-emerald-200"
+                  className="h-12 w-12 rounded-2xl object-cover border-2 border-black shadow-xs"
                 />
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900 leading-tight">
+                  <h4 className="text-sm font-black text-slate-900 leading-tight">
                     {inv.name}
                   </h4>
-                  <div className="text-xs text-slate-500">{inv.department}</div>
+                  <div className="text-xs text-slate-500 font-medium">{inv.department}</div>
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-[#FAF8F3] border border-[#EAE4D6] space-y-1.5 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-500 font-medium">Assigned Duty:</span>
-                  <span className="font-bold font-mono text-emerald-800">
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500 font-bold">Assigned Duty:</span>
+                  <span className="font-mono font-black text-black bg-[#D4F754] px-2 py-0.5 rounded-md">
                     {inv.assignedRoom ? `Room ${inv.assignedRoom}` : "Standby Relief"}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500 font-medium">Shift Slot:</span>
-                  <span className="text-slate-700 font-mono">09:00 - 12:30 PM</span>
+                  <span className="text-slate-800 font-mono font-bold">09:00 - 12:30 PM</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500 font-medium">Anti-Bias Check:</span>
-                  <span className="text-emerald-700 font-semibold text-[11px]">
+                  <span className="text-black font-bold text-[11px] bg-[#B8B5FF]/40 px-2 py-0.5 rounded">
                     ✓ No Dept Conflict
                   </span>
                 </div>
@@ -171,15 +171,15 @@ export default function InvigilatorRosterPage() {
 
               <div className="flex items-center justify-between pt-1">
                 <span
-                  className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                  className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
                     inv.status === "Active"
-                      ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                      ? "bg-[#161618] text-[#D4F754]"
                       : "bg-amber-100 text-amber-800 border border-amber-300"
                   }`}
                 >
                   ● {inv.status}
                 </span>
-                <span className="text-[11px] text-slate-400 font-mono">
+                <span className="text-[11px] text-slate-400 font-mono font-bold">
                   Duty ID #{inv.id}04
                 </span>
               </div>
@@ -190,21 +190,21 @@ export default function InvigilatorRosterPage() {
         /* Incident & Malpractice Logger Mode */
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Add Incident Form */}
-          <div className="lg:col-span-5 bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-mono flex items-center gap-2">
-              <Plus className="h-4 w-4 text-emerald-600" />
+          <div className="lg:col-span-5 bento-card p-6 space-y-4">
+            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider font-mono flex items-center gap-2">
+              <Plus className="h-4 w-4 text-black" />
               <span>Log Proctor Event / Incident</span>
             </h3>
 
             <form onSubmit={handleAddIncident} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 mb-1">
                   Exam Hall
                 </label>
                 <select
                   value={newRoom}
                   onChange={(e) => setNewRoom(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#FAF8F3] border border-[#E2DCCE] text-xs font-semibold text-slate-900 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none"
                 >
                   {rooms.map((r) => (
                     <option key={r.roomNumber} value={r.roomNumber}>
@@ -215,7 +215,7 @@ export default function InvigilatorRosterPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 mb-1">
                   Student Roll Number *
                 </label>
                 <input
@@ -224,18 +224,18 @@ export default function InvigilatorRosterPage() {
                   placeholder="e.g. CSE2026014"
                   value={newRoll}
                   onChange={(e) => setNewRoll(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#FAF8F3] border border-[#E2DCCE] text-xs font-mono text-slate-900 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-black"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 mb-1">
                   Event / Incident Type
                 </label>
                 <select
                   value={newType}
                   onChange={(e) => setNewType(e.target.value as any)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#FAF8F3] border border-[#E2DCCE] text-xs font-semibold text-slate-900 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none"
                 >
                   <option value="Extra Sheet Issued">Extra Sheet / Booklet Issued</option>
                   <option value="Medical Assistance">Medical / Sickness Assistance</option>
@@ -245,7 +245,7 @@ export default function InvigilatorRosterPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 mb-1">
                   Proctor Remarks & Booklet Serial
                 </label>
                 <textarea
@@ -253,13 +253,13 @@ export default function InvigilatorRosterPage() {
                   placeholder="Detail serial numbers or reasons..."
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#FAF8F3] border border-[#E2DCCE] text-xs text-slate-900 focus:outline-none focus:border-emerald-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-black"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition shadow-md shadow-emerald-600/20"
+                className="w-full py-3 rounded-full bg-[#161618] hover:bg-black text-white font-black text-xs uppercase tracking-wider transition shadow-md ring-2 ring-[#D4F754]/30"
               >
                 Save Incident Record
               </button>
@@ -267,8 +267,8 @@ export default function InvigilatorRosterPage() {
           </div>
 
           {/* Incident Stream */}
-          <div className="lg:col-span-7 bg-white border border-[#E8E2D4] p-6 rounded-3xl shadow-sm space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider font-mono">
+          <div className="lg:col-span-7 bento-card p-6 space-y-4">
+            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider font-mono">
               Live Hall Event Log ({incidents.length})
             </h3>
 
@@ -276,36 +276,36 @@ export default function InvigilatorRosterPage() {
               {incidents.map((inc) => (
                 <div
                   key={inc.id}
-                  className="p-4 rounded-2xl bg-[#FAF8F3] border border-[#E8E2D4] space-y-2 text-xs"
+                  className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold px-2 py-0.5 rounded bg-white text-slate-900 border border-[#E2DCCE]">
+                      <span className="font-mono font-black px-2.5 py-0.5 rounded-lg bg-black text-[#D4F754]">
                         Room {inc.roomNumber}
                       </span>
-                      <span className="font-mono font-bold text-emerald-800">
+                      <span className="font-mono font-black text-slate-900">
                         {inc.studentRoll}
                       </span>
                     </div>
 
                     <span
-                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
+                      className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
                         inc.type === "Extra Sheet Issued"
-                          ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                          ? "bg-[#D4F754] text-black"
                           : inc.type === "Medical Assistance"
-                          ? "bg-blue-100 text-blue-800 border border-blue-300"
+                          ? "bg-[#B8B5FF] text-slate-900"
                           : inc.type === "Late Entry"
-                          ? "bg-amber-100 text-amber-800 border border-amber-300"
-                          : "bg-red-100 text-red-800 border border-red-300"
+                          ? "bg-amber-100 text-amber-900 border border-amber-300"
+                          : "bg-red-100 text-red-900 border border-red-300"
                       }`}
                     >
                       {inc.type}
                     </span>
                   </div>
 
-                  <p className="text-slate-700">{inc.notes}</p>
+                  <p className="text-slate-700 font-medium">{inc.notes}</p>
 
-                  <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono pt-1 border-t border-[#EAE4D6]">
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono pt-1 border-t border-slate-200 font-semibold">
                     <span>Recorded by: {inc.invigilatorName}</span>
                     <span>{inc.timestamp}</span>
                   </div>

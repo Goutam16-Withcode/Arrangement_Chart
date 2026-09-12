@@ -30,7 +30,17 @@ export default function DashboardPage() {
     setIsConfigModalOpen,
   } = useSeating();
 
-  const [filterPeriod, setFilterPeriod] = useState("Today");
+  // Dynamic Branch Breakdown
+  const branchEntries = Object.entries(metrics.branchesCount || {});
+  const totalSeated = metrics.seatedStudents || roomSeatings.reduce((sum, r) => sum + r.assignedCount, 0) || 235;
+  
+  const branch1 = branchEntries[0] || ["CSE", Math.round(totalSeated * 0.45)];
+  const branch2 = branchEntries[1] || ["ME", Math.round(totalSeated * 0.30)];
+  const branch3 = branchEntries[2] || ["ECE", Math.max(0, totalSeated - branch1[1] - branch2[1])];
+
+  const pct1 = Math.round((branch1[1] / totalSeated) * 100) || 45;
+  const pct2 = Math.round((branch2[1] / totalSeated) * 100) || 30;
+  const pct3 = Math.round((branch3[1] / totalSeated) * 100) || 25;
 
   // Dot matrix data for Hall Utilization card
   const dotMatrixRows = [
@@ -43,33 +53,38 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Title Bar (matching Health Overview in screenshot) */}
+      {/* Title Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
+          <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider mb-1 text-slate-700">
+            <span>✦ {collegeProfile.collegeName}</span>
+            <span className="text-slate-400">•</span>
+            <span className="bg-[#D4F754] text-black px-2 py-0.5 rounded font-black">{activeSession.title}</span>
+          </div>
           <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
             Examination Overview
           </h1>
           <p className="text-xs text-slate-500 mt-1 font-medium">
-            Take control of your exam seating & hall allocations today!
+            Live multi-branch candidate seating allocations & hall utilization metrics.
           </p>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="text-xs text-slate-400 font-mono">
+          <span className="text-xs text-slate-500 font-mono font-bold">
             {activeSession.date}
           </span>
           <button
             onClick={() => setIsConfigModalOpen(true)}
             className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 text-xs font-bold text-slate-800 shadow-2xs hover:bg-slate-50 transition"
           >
-            Today ⌵
+            Switch Session ⌵
           </button>
         </div>
       </div>
 
       {/* Main Bento Grid Row */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Card 1: Energy Used -> Capacity & Seating Distribution (Left 5 Cols) */}
+        {/* Card 1: Seating Capacity Allocation */}
         <div className="lg:col-span-5 bento-card p-6 flex flex-col justify-between space-y-6">
           {/* Card Top Title & Menu */}
           <div className="flex items-center justify-between">
@@ -77,7 +92,10 @@ export default function DashboardPage() {
               <Zap className="h-4 w-4 text-slate-900 fill-slate-900" />
               <span>Seating Capacity Allocation</span>
             </div>
-            <button className="text-slate-400 hover:text-slate-800">
+            <button
+              onClick={() => setIsConfigModalOpen(true)}
+              className="text-slate-400 hover:text-slate-800"
+            >
               <MoreVertical className="h-4 w-4" />
             </button>
           </div>
@@ -86,76 +104,76 @@ export default function DashboardPage() {
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-black text-slate-900 font-mono tracking-tight">
-                {metrics.seatedStudents || "4,3k"}
+                {totalSeated.toLocaleString()}
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[11px] font-bold">
-                +5%
+              <span className="px-2 py-0.5 rounded-full bg-[#D4F754] text-black text-[11px] font-black">
+                100% Placed
               </span>
             </div>
             <span className="text-xs text-slate-400 font-medium mt-0.5 block">
-              candidates seated today
+              candidates seated for {activeSession.timing}
             </span>
           </div>
 
-          {/* Venn / Overlapping Circles Visualization (as in screenshot) */}
+          {/* Venn / Overlapping Circles Visualization */}
           <div className="relative h-44 w-full flex items-center justify-center my-2">
-            {/* Lilac Circle (CSE) */}
-            <div className="absolute left-6 md:left-12 h-28 w-28 rounded-full bg-[#B8B5FF] flex flex-col items-center justify-center text-slate-900 font-bold shadow-sm z-10">
-              <span className="text-lg font-black leading-none">2,6k</span>
-              <span className="text-[10px] text-slate-800 font-medium">CSE</span>
+            {/* Lilac Circle (Branch 1) */}
+            <div className="absolute left-6 md:left-12 h-28 w-28 rounded-full bg-[#B8B5FF] flex flex-col items-center justify-center text-slate-900 font-bold shadow-sm z-10 transition-transform hover:scale-105">
+              <span className="text-lg font-black leading-none">{branch1[1]}</span>
+              <span className="text-[10px] text-slate-800 font-bold uppercase">{branch1[0]}</span>
             </div>
 
-            {/* Dark Charcoal Circle (ME) */}
-            <div className="absolute right-6 md:right-12 h-28 w-28 rounded-full bg-[#1E1E22] flex flex-col items-center justify-center text-white font-bold shadow-md z-10">
-              <span className="text-lg font-black leading-none">1,2k</span>
-              <span className="text-[10px] text-slate-300 font-medium">ME</span>
+            {/* Dark Charcoal Circle (Branch 2) */}
+            <div className="absolute right-6 md:right-12 h-28 w-28 rounded-full bg-[#1E1E22] flex flex-col items-center justify-center text-white font-bold shadow-md z-10 transition-transform hover:scale-105">
+              <span className="text-lg font-black leading-none">{branch2[1]}</span>
+              <span className="text-[10px] text-slate-300 font-bold uppercase">{branch2[0]}</span>
             </div>
 
-            {/* Neon Lime Small Overlap Circle (ECE) */}
-            <div className="absolute bottom-1 h-20 w-20 rounded-full bg-[#D4F754] flex flex-col items-center justify-center text-black font-bold shadow-md z-20 border-2 border-white">
-              <span className="text-sm font-black leading-none">500</span>
-              <span className="text-[9px] text-black/80 font-bold">ECE</span>
+            {/* Neon Lime Small Overlap Circle (Branch 3) */}
+            <div className="absolute bottom-1 h-20 w-20 rounded-full bg-[#D4F754] flex flex-col items-center justify-center text-black font-bold shadow-md z-20 border-2 border-white transition-transform hover:scale-105">
+              <span className="text-sm font-black leading-none">{branch3[1]}</span>
+              <span className="text-[9px] text-black font-black uppercase">{branch3[0]}</span>
             </div>
           </div>
 
-          {/* Progress Percent Breakdown Bars (as in screenshot) */}
+          {/* Progress Percent Breakdown Bars */}
           <div className="space-y-3 pt-2">
-            {/* CSE */}
+            {/* Branch 1 */}
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <span className="font-black text-slate-900">45%</span>
-                <div className="w-32 sm:w-44 h-2 rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full bg-[#B8B5FF] rounded-full w-[45%]" />
+                <span className="font-black text-slate-900">{pct1}%</span>
+                <div className="w-28 sm:w-36 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-[#B8B5FF] rounded-full" style={{ width: `${pct1}%` }} />
                 </div>
               </div>
-              <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
-                Computer Science <span className="h-1.5 w-1.5 rounded-full bg-[#B8B5FF]" />
+              <span className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                {branch1[0]} <span className="h-1.5 w-1.5 rounded-full bg-[#B8B5FF]" />
               </span>
             </div>
 
-            {/* ME */}
+            {/* Branch 2 */}
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <span className="font-black text-slate-900">30%</span>
-                <div className="w-32 sm:w-44 h-2 rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full bg-[#1E1E22] rounded-full w-[30%]" />
+                <span className="font-black text-slate-900">{pct2}%</span>
+                <div className="w-28 sm:w-36 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-[#1E1E22] rounded-full" style={{ width: `${pct2}%` }} />
                 </div>
               </div>
-              <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
-                Mechanical Engg <span className="h-1.5 w-1.5 rounded-full bg-[#1E1E22]" />
+              <span className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                {branch2[0]} <span className="h-1.5 w-1.5 rounded-full bg-[#1E1E22]" />
               </span>
             </div>
 
-            {/* ECE */}
+            {/* Branch 3 */}
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <span className="font-black text-slate-900">25%</span>
-                <div className="w-32 sm:w-44 h-2 rounded-full bg-slate-100 overflow-hidden">
-                  <div className="h-full bg-[#D4F754] rounded-full w-[25%]" />
+                <span className="font-black text-slate-900">{pct3}%</span>
+                <div className="w-28 sm:w-36 h-2 rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-full bg-[#D4F754] rounded-full" style={{ width: `${pct3}%` }} />
                 </div>
               </div>
-              <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
-                Electronics <span className="h-1.5 w-1.5 rounded-full bg-[#D4F754]" />
+              <span className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
+                {branch3[0]} <span className="h-1.5 w-1.5 rounded-full bg-[#D4F754]" />
               </span>
             </div>
           </div>
@@ -163,49 +181,49 @@ export default function DashboardPage() {
 
         {/* Right 7 Cols: 4 Sub-Cards Grid */}
         <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {/* Card 2: Heart Rate -> Zero Conflict Index */}
+          {/* Card 2: Zero Conflict Index */}
           <div className="bento-card p-5 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
                 <ShieldCheck className="h-4 w-4 text-slate-900" />
                 <span>Zero Conflict Score</span>
               </div>
-              <button className="text-slate-400 hover:text-slate-800">
-                <MoreVertical className="h-4 w-4" />
-              </button>
+              <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full font-mono font-bold text-slate-600">
+                Anti-Cheat AI
+              </span>
             </div>
 
             <div className="my-4">
               <div className="flex items-baseline gap-2">
                 <span className="text-4xl font-black text-slate-900 font-mono">
-                  {metrics.conflictFreeRate}%
+                  {metrics.conflictFreeRate || 100}%
                 </span>
                 <span className="text-xs text-slate-400 font-medium">
-                  0 Conflicts
+                  0 Adjacent Clashes
                 </span>
               </div>
               <div className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-[#D4F754]" />
-                <span>Optimal Multi-Branch Separation</span>
+                <span>Multi-Branch Alternating Matrix</span>
               </div>
             </div>
 
-            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
-              <span>Avg 100% Target</span>
-              <span>Constraint Engine Active</span>
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between font-bold">
+              <span>Target 100%</span>
+              <span className="text-black">Zero Cheating Risk</span>
             </div>
           </div>
 
-          {/* Card 3: Wellness Index -> Hall Utilization + Dot Matrix Grid */}
+          {/* Card 3: Hall Utilization + Dot Matrix Grid */}
           <div className="bento-card p-5 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
                 <Percent className="h-4 w-4 text-slate-900" />
                 <span>Hall Utilization</span>
               </div>
-              <button className="text-slate-400 hover:text-slate-800">
-                <MoreVertical className="h-4 w-4" />
-              </button>
+              <span className="text-[10px] bg-[#D4F754] px-2 py-0.5 rounded-full font-mono font-black text-black">
+                Optimal
+              </span>
             </div>
 
             <div className="my-2 flex items-center justify-between">
@@ -214,11 +232,11 @@ export default function DashboardPage() {
                   <span className="text-3xl font-black text-slate-900 font-mono">
                     {metrics.utilizationRate || 94}%
                   </span>
-                  <span className="px-1.5 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-bold">
+                  <span className="px-1.5 py-0.5 rounded-full bg-[#D4F754] text-black text-[10px] font-black">
                     +10%
                   </span>
                 </div>
-                <span className="text-[11px] text-slate-400">Desk Efficiency</span>
+                <span className="text-[11px] text-slate-400 font-medium">Desk Efficiency</span>
               </div>
 
               {/* Dot Matrix Grid visualization */}
@@ -242,41 +260,43 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
-              <span>Optimal Seat Density</span>
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between font-bold">
+              <span>Dynamic Spacing</span>
               <span>No Overcrowding</span>
             </div>
           </div>
 
-          {/* Card 4: Activity -> Active Examination Halls */}
+          {/* Card 4: Active Examination Halls */}
           <div className="bento-card p-5 flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
                 <Activity className="h-4 w-4 text-slate-900" />
                 <span>Active Exam Halls</span>
               </div>
-              <button className="text-slate-400 hover:text-slate-800">
-                <MoreVertical className="h-4 w-4" />
-              </button>
+              <Link href="/studio" className="text-[11px] font-bold text-black hover:underline">
+                View Studio →
+              </Link>
             </div>
 
             <div className="my-3">
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-black text-slate-900 font-mono">
-                  {metrics.totalRooms || 3}
+                  {roomSeatings.length || 3}
                 </span>
                 <span className="text-xs text-slate-500 font-bold">Halls Live</span>
               </div>
-              <div className="text-[11px] text-slate-500 mt-1">
-                75 Seats / Hall Average
+              <div className="text-[11px] text-slate-500 mt-1 font-medium">
+                {Math.round(totalSeated / (roomSeatings.length || 1))} Candidates / Hall Average
               </div>
             </div>
 
-            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
-              <span>Rooms: 302, 304, 101</span>
-              <Link href="/studio" className="text-black font-bold hover:underline">
-                View Halls →
-              </Link>
+            <div className="text-[10px] font-mono text-slate-500 pt-2 border-t border-slate-100 flex justify-between">
+              <span className="truncate max-w-[150px]">
+                Rooms: {roomSeatings.map((r) => r.roomConfig.roomNumber).join(", ")}
+              </span>
+              <span className="text-[#D4F754] bg-black px-1.5 py-0.5 rounded text-[9px] font-bold">
+                Assigned
+              </span>
             </div>
           </div>
 
@@ -287,9 +307,9 @@ export default function DashboardPage() {
                 <GraduationCap className="h-4 w-4 text-slate-900" />
                 <span>Invigilators on Duty</span>
               </div>
-              <button className="text-slate-400 hover:text-slate-800">
-                <MoreVertical className="h-4 w-4" />
-              </button>
+              <Link href="/invigilators" className="text-[11px] font-bold text-black hover:underline">
+                Duty Roster →
+              </Link>
             </div>
 
             <div className="my-3 flex items-center gap-3">
@@ -307,16 +327,16 @@ export default function DashboardPage() {
                 <span className="text-sm font-black text-slate-900 block">
                   {invigilators.length} Assigned
                 </span>
-                <span className="text-[10px] text-slate-400">Anti-Bias Rotation</span>
+                <span className="text-[10px] text-slate-400 font-medium">Anti-Bias Rotation</span>
               </div>
             </div>
 
-            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between">
+            <div className="text-[10px] font-mono text-slate-400 pt-2 border-t border-slate-100 flex justify-between font-bold">
               <span>Chief: {collegeProfile.chiefSuperintendent}</span>
             </div>
           </div>
 
-          {/* Card 6: Sleep Analysis -> Allocation Efficiency & Striped Timeline (Full width dark card) */}
+          {/* Card 6: Striped Bar Chart for Real Exam Rooms */}
           <div className="sm:col-span-2 bento-card-dark p-6 flex flex-col justify-between space-y-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs font-bold text-white">
@@ -325,7 +345,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="px-3 py-1 rounded-full bg-white/10 text-white text-xs font-bold flex items-center gap-1 border border-white/10">
-                <span>Session Timeline ⌵</span>
+                <span>{activeSession.title}</span>
               </div>
             </div>
 
@@ -347,7 +367,7 @@ export default function DashboardPage() {
                 <div className="w-2.5 h-7 rounded-full bg-[#B8B5FF]" />
                 <div>
                   <div className="text-2xl font-black text-white font-mono leading-none">
-                    3h 00m
+                    {activeSession.timing.includes("3") ? "3h 00m" : "2h 00m"}
                   </div>
                   <div className="text-[10px] text-slate-400 font-medium mt-0.5">
                     Exam Duration
@@ -356,55 +376,38 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Striped Bar Chart (matching Sleep Analysis bar chart in screenshot) */}
+            {/* Striped Bar Chart (Dynamic from roomSeatings) */}
             <div className="pt-2">
               <div className="flex items-end justify-between gap-3 h-28 px-2">
-                {/* Room 101 */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[45%] rounded-xl" />
-                  <span className="text-[10px] text-slate-400 font-mono">Rm 101</span>
-                </div>
+                {roomSeatings.map((rs, idx) => {
+                  const occRate = Math.round((rs.assignedCount / rs.totalCapacity) * 100) || 75;
+                  const isHighlight = idx === 0;
 
-                {/* Room 202 */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[60%] rounded-xl" />
-                  <span className="text-[10px] text-slate-400 font-mono">Rm 202</span>
-                </div>
-
-                {/* Room 302 */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[55%] rounded-xl" />
-                  <span className="text-[10px] text-slate-400 font-mono">Rm 302</span>
-                </div>
-
-                {/* Room 304 (Active Highlighted Neon Lime & Lilac) */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full flex gap-1 h-full items-end">
-                    <div className="w-1/2 bg-[#D4F754] h-[95%] rounded-xl shadow-lg shadow-[#D4F754]/20" />
-                    <div className="w-1/2 bg-[#B8B5FF] h-[75%] rounded-xl" />
-                  </div>
-                  <span className="text-[10px] text-[#D4F754] font-bold font-mono flex items-center">
-                    Hall 304 ↗
-                  </span>
-                </div>
-
-                {/* Room 401 */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[65%] rounded-xl" />
-                  <span className="text-[10px] text-slate-400 font-mono">Rm 401</span>
-                </div>
-
-                {/* Room 402 */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[40%] rounded-xl" />
-                  <span className="text-[10px] text-slate-400 font-mono">Rm 402</span>
-                </div>
-
-                {/* Hall 501 */}
-                <div className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                  <div className="w-full bg-[#27272A] bg-striped-pattern h-[50%] rounded-xl" />
-                  <span className="text-[10px] text-slate-400 font-mono">Hall 501</span>
-                </div>
+                  return (
+                    <div key={rs.roomConfig.roomNumber} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+                      {isHighlight ? (
+                        <div className="w-full flex gap-1 h-full items-end">
+                          <div
+                            className="w-1/2 bg-[#D4F754] rounded-xl shadow-lg shadow-[#D4F754]/20 transition-all duration-300"
+                            style={{ height: `${occRate}%` }}
+                          />
+                          <div
+                            className="w-1/2 bg-[#B8B5FF] rounded-xl transition-all duration-300"
+                            style={{ height: `${Math.max(25, occRate - 15)}%` }}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className="w-full bg-[#27272A] bg-striped-pattern rounded-xl transition-all duration-300 hover:bg-[#3F3F46]"
+                          style={{ height: `${occRate}%` }}
+                        />
+                      )}
+                      <span className={`text-[10px] font-mono ${isHighlight ? "text-[#D4F754] font-bold" : "text-slate-400"}`}>
+                        Rm {rs.roomConfig.roomNumber}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -418,11 +421,11 @@ export default function DashboardPage() {
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-extrabold text-sm text-slate-900">
+            <h3 className="font-black text-sm text-slate-900 tracking-tight">
               Launch Visual 2D Seating Studio
             </h3>
-            <p className="text-xs text-slate-500">
-              Drag-and-drop seat swapping, anti-cheating check, and live QR code rosters.
+            <p className="text-xs text-slate-500 font-medium">
+              Drag-less seat swapping, anti-cheating separation check, and section-wise attendance rosters.
             </p>
           </div>
         </div>
@@ -430,16 +433,16 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2.5">
           <Link
             href="/scanner"
-            className="px-4 py-2 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold transition shadow-2xs"
+            className="px-4 py-2.5 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold transition shadow-2xs"
           >
             📷 QR Scanner
           </Link>
           <Link
             href="/studio"
-            className="px-5 py-2 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-bold transition shadow-sm flex items-center gap-1.5"
+            className="px-5 py-2.5 rounded-full bg-[#161618] hover:bg-black text-white text-xs font-black transition shadow-sm flex items-center gap-1.5"
           >
             <span>Open Studio</span>
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            <ArrowUpRight className="h-3.5 w-3.5 text-[#D4F754]" />
           </Link>
         </div>
       </div>

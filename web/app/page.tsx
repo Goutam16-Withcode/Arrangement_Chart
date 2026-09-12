@@ -52,15 +52,6 @@ export default function HomePage() {
       accent: "bg-[#D4F754]",
     },
     {
-      title: "Student Kiosk & Indoor Wayfinding",
-      description:
-        "Instant roll number search portal with 3D pin classroom locators, digital admit pass, and turn-by-turn indoor routing.",
-      link: "/find-seat",
-      icon: <Search className="h-6 w-6 text-slate-900" />,
-      badge: "Self Service",
-      accent: "bg-[#B8B5FF]",
-    },
-    {
       title: "Print Station & Section-Wise Exporter",
       description:
         "1-click batch export for section-wise signature books (F-1/S-1/T-1), A4 door notice charts, and multi-sheet Excel files.",
